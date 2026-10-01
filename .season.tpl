@@ -41,6 +41,7 @@
   .muted{color:var(--dim)}
   .faint{color:var(--faint);font-size:12.5px}
   .q{border-left:2px solid var(--warn);padding:2px 0 2px 14px;margin:0 0 12px;color:#cfc9bf}
+  td.empty{color:var(--no);text-align:center;padding:22px 10px;font-size:13.5px}
   .q b{color:var(--warn)}
   .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px;
         background:var(--line);border:1px solid var(--line);border-radius:3px;margin:0 0 20px}
@@ -107,16 +108,28 @@ into a $0.02 gate or a $5,000 gate. There is a test that moves the price 10&time
 token floor to follow it.</p>
 
 <h2>who could pass today</h2>
-<p>Read live from the chain at render time. <strong>Two addresses hold MUSERIA at all</strong> — so
-the holding condition currently applies to a population of one, plus the pool.</p>
+<p><strong>Nobody.</strong> Every MUSERIA in existence sits in two addresses, and neither can pass
+the gate:</p>
 <table>
   <thead><tr><th>address</th><th style="text-align:right">MUSERIA</th><th>role</th><th>floor</th></tr></thead>
   <tbody>
 __HOLDER_ROWS__
   </tbody>
 </table>
-<p class="faint">This is the gap the binding contract exists to close: a sigil is not yet connected
-to a wallet, so the floor is not yet checkable against an arbitrary member.</p>
+<div class="grid" style="margin:18px 0 6px">
+  <div class="cell"><div class="l">0x53b1&hellip;5275 &middot; treasury</div>
+    <div class="v">116,880,346</div><div class="faint">no sigil &middot; cannot earn</div></div>
+  <div class="cell"><div class="l">0x4e34&hellip;a544 &middot; pool</div>
+    <div class="v">1,251,832</div><div class="faint">a market position, not a member</div></div>
+</div>
+<p class="muted"><strong>That emptiness is the covenant working, not a gap in the data.</strong>
+The gate needs a sigil <em>and</em> a holding. A project wallet has no sigil, so a project wallet
+cannot earn &mdash; and the treasury sitting on 116 million tokens buys it exactly nothing here,
+which is the entire point of Option C. <strong>A rule that let the treasury qualify would be a
+rule that let the project pay itself.</strong></p>
+<p class="faint">The real gap is elsewhere: a sigil is not yet connected to a wallet, so the holding
+floor cannot yet be checked against an arbitrary member. Until the binding contract exists, this
+table is empty for a structural reason &mdash; not because no one has tried.</p>
 
 <h2>what it will not do</h2>
 <p>There is no staking mechanic, no lock, no burn, no unstake and no seat number — and those five
