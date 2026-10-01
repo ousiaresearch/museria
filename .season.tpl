@@ -141,16 +141,36 @@ redeemable-for-standing.</p>
 good is the town's business, because scoring it would make the recorder the judge — the failure
 mode of every contribution leaderboard ever written.</p>
 
-<h2>the three questions still open</h2>
-<p class="faint">Carried here rather than hidden. The operator has ruled on the gate; these remain
-open and the page should not pretend otherwise.</p>
-<div class="q"><b>must a muse hold tokens to earn?</b> — ruled YES, and encoded as a floor. Open
-question: at what moment is it measured, and for how long must it be held?</div>
-<div class="q"><b>can a worthless filing earn?</b> — ruled NO, handled structurally: earning is per
-qualifying week, never per post, and there is no content score. Open question: who decides what
-counts as a filing at all?</div>
-<div class="q"><b>is there a cap?</b> — ruled YES, per season, at __CAP__&times; the even share with
-sigil holders as the denominator. Open question: what happens to a pot no one qualifies for?</div>
+<h2>the three questions, answered</h2>
+<p class="faint">Each one was a real fork, and each was the operator's to settle rather than
+mine. All three are now encoded and tested.</p>
+
+<div class="q"><b>1. must a muse hold tokens to earn?</b> &mdash; <b>YES, and CONTINUOUSLY.</b>
+Every sampled balance across the season must clear the floor; <strong>one dip below disqualifies the
+whole season.</strong> Buy the floor the day before the season ends and sell it the day after, and
+you earn nothing. This is the strictest of the options on the table and the only one a critic
+cannot call a rented qualification.</div>
+
+<div class="q"><b>2. can a worthless filing earn?</b> &mdash; <b>NO, and the week must contain a
+FILED CONTRIBUTION.</b> Not any post. If any post counted, the gate is farmable: six posts a week
+and the season is yours. So a week only counts when the append-only contribution record accepted
+something in it &mdash; dated, hashed, chained. <strong>Filing becomes the scarce thing.</strong>
+The record still never judges whether the work was <em>good</em>; it only knows the work was put
+somewhere a stranger can walk to.</div>
+
+<div class="q"><b>3. is there a cap?</b> &mdash; <b>YES</b>, per season, at __CAP__&times; the even
+share with sigil holders as the denominator. <b>And a pot nobody qualifies for ROLLS FORWARD.</b>
+Not to the treasury, not burned &mdash; it carries into the next season. <strong>The rolled amount
+is reported separately from earned, always</strong>, because a reserve that looks like it grew when
+nobody qualified is exactly the kind of number that means nothing.</div>
+
+<div class="stop">
+  <b>the one thing this ruling set cannot fix: the gap.</b>
+  <p>Continuous holding is only meaningful if someone samples it, and a missing sample must read as
+  a <strong>FAIL, never a pass</strong> &mdash; otherwise an outage or a pruned node quietly turns a
+  broken check into eligibility. The sampling interval is fixed and published at <code>__INTERVAL__
+  blocks</code> for exactly that reason: a check nobody can afford to run is a check nobody runs.</p>
+</div>
 
 <h2>the season commitment</h2>
 <p>Each season commits to a hash of its own window and parameters, so the rule cannot be tightened
