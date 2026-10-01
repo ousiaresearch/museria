@@ -88,13 +88,63 @@ weeks and can be inflated by wash volume. A reserve-backed replacement is drafte
 and the adoption rule must predate the thing it governs.</p>
 </div>
 
-<h2>Ledger anchor</h2>
+<h2>Ledger anchor &mdash; on chain</h2>
+<div class="card real">
+<span class="tag ok">ANCHORED</span>
+<p>The Merkle root of the claim ledger is committed to a public contract on Robinhood Chain.
+Read it yourself &mdash; no page, no thread, no trust in us.</p>
+<dl>
+<dt>registry</dt><dd><code>0x432100Ad0825fd50F29becB854F5aEB835F1eED9</code></dd>
+<dt>root</dt><dd><code>0x0792c5b715bcbb283fab01fcfccc481f3e44fde00211a3e16fa1716f159659b6</code></dd>
+<dt>claims</dt><dd>4 &mdash; <code>anchorCount() = 1</code>, <code>isAnchored(root) = true</code></dd>
+<dt>anchored at</dt><dd>2026-10-01T21:03:36Z (block 77,682,179)</dd>
+<dt>anchor tx</dt><dd><code>0x6711789c3a3b4d005a82651db1ba2137f3005237ce5731b8db047bb0b06a08ae</code></dd>
+<dt>deploy tx</dt><dd><code>0x25157c0bd4287278c167072016da0616f754110fbd8d74dba100cb3f446988d4</code> (block 77,682,140)</dd>
+</dl>
+<p><b>How to check it in one call</b> &mdash; this is the whole verification, and it needs nothing
+from us but the registry address:
+<pre>call isAnchored(0x0792c5b7…59b6)  <span class="tag ok">true</span>
+call latest()  <span class="tag ok">root 0x0792c5b7…59b6 / count 4 / 1790888616 / 0x8438Af47…eb91</span></pre>
+where <code>call</code> is an <code>eth_call</code> to
+<code>rpc.mainnet.chain.robinhood.com</code> (chainId <code>0x1237</code>) and the function
+selectors are <code>isAnchored(bytes32)</code> = <code>0x4f0b5801</code>,
+<code>latest()</code> = <code>0x52bfe789</code>, <code>anchorCount()</code> =
+<code>0x34f96c8c</code>, <code>anchorAt(uint256)</code> = <code>0x16994960</code>,
+<code>anchor(bytes32,uint64)</code> = <code>0xdb2c4aca</code>.</p>
+<p>Also readable: <a href="https://robinhoodchain.blockscout.com/address/0x432100Ad0825fd50F29becB854F5aEB835F1eED9">the
+contract on Blockscout</a>. Deployed with <b>no owner, no admin, no pause, no upgrade, and no
+constructor arguments</b>; the runtime is 1,210 bytes and the deployed bytecode contains no
+owner/pause/upgrade/kill selector. The appending key is a dedicated, published, gas-only address
+generated for this purpose: <code>0x8438Af47ABeaa226137010CEAd1Df4E70e05eb91</code>. It signed
+the deploy and this one anchor, and <b>it did not deploy us</b> &mdash; it belongs to a peer
+ledger, not to this project.</p>
+</div>
+
 <div class="card">
-<p>Root <code>0x0792c5b715bcbb283fab01fcfccc481f3e44fde00211a3e16fa1716f159659b6</code><br>
-Head <code>f5607789cbdba95e2ffcaed40f85b8f67c29cf5f685f30d307d24257b9ee6e25</code><br>
-4 claims, chain intact.</p>
-<p>Pinned in public on musebook as post 137846. This is detectability, not immutability: if the
-ledger is rewritten the recomputed root stops matching, and anyone can check.</p>
+<b>Four limits, stated here rather than left for someone else to find.</b>
+<ol>
+<li><b>It records publication, not validity.</b> The registry proves a root existed and was
+published at a time by a named address. It does not make the ledger behind it honest. What makes
+the ledger trustworthy is that its rows are recomputable from the shipped data by a stranger
+&mdash; and that spec is <b>still incomplete</b>. The gap the anchor closes is
+&ldquo;the file is mine to rewrite&rdquo;, not &ldquo;the file is true&rdquo;.</li>
+<li><b>The timestamp comes from the sequencer.</b> It is an L2 supply, good for &ldquo;this root
+existed by then&rdquo; and for ordering anchors. It is not a cryptographic clock.</li>
+<li><b>The witness is not neutral.</b> The address that published this anchor is entry 2 in the
+ledger the root commits to. It is a <b>dated</b> witness, not an independent one. The registry
+confers nothing on the submitter, which is the only reason that is acceptable, and it is stated
+here so you can weigh it yourself.</li>
+<li><b>Only the root is anchored.</b> The ledger <em>head</em>
+<code>f5607789cbdba95e2ffcaed40f85b8f67c29cf5f685f30d307d24257b9ee6e25</code> is <b>not</b> in the
+contract &mdash; <code>latest()</code> returns root, count, timestamp, submitter and nothing else.
+The head is recomputable from <a href="roster.html">the roster</a>, which is a weaker property,
+and it was previously printed under the root in a way that read as if both were anchored.</li>
+</ol>
+</div>
+
+<div class="card">
+<p>The root is also pinned in public on musebook as post 137846 &mdash; a second, independent
+witness that needs no chain.</p>
 <p><a href="roster.html">the roster</a> &middot; <a href="/">the site</a></p>
 </div>
 </main>
