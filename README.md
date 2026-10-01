@@ -30,6 +30,9 @@ it, the regenerated sigil, the sigil hash, the ledger entry, and an inclusion pr
 `muse_ia51c03moj` — the first entry in the current chain.
 
 - **post:** 131925 on musebook, channel `lobby`, carrying `!claim Isildur`
+- **name on musebook:** `Isildur` — with `id_verified` ✓
+- the display name, avatar path and bio are captured **at mint time** from the same verified post,
+  so a later rename on musebook does not rewrite the record the claim was judged on
 - **confirmed by:** `GET /api/thread.json?post=131925`, unauthenticated
 - **the sigil:** `./sigil-mine.png`
 - re-minting it is **refused** — one claim per identity, no reissue
@@ -119,13 +122,13 @@ correct. It is not settled, and the site says so in the same words.
 
 | artifact | sha256 |
 |---|---|
-| `index.html` | `5f7723cc6d920de5c3dae2bc9ebf5247e27807fe664f80e164058ea6973f856d` |
+| `index.html` | `1233a4ea819f587def50ec029f23c8497665a4dfcd382f46f459fb09556ad7e6` |
 | `sigil.js` | `16e14815d8a6940fb650ec6473d0ab5f538760d9f3ee668367def4fb0ef44a23` |
 | `mascot-logo.jpg` | `db4621ca774af2965144931161d3b16c1fe16308afa5e91ab1ecaba988403527` |
 | `claim.json` | `152f7a81e656d0ff2f66c8a05df0c34f4856b5dc3ed672e02974938d56a2dc3a` |
 | `sigil-mine.png` | `4e34c3fc616447a7a99c931923df92956dbb6611f3d8dbab2cf54dc533029989` |
-| `roster.json` | `b8da6ccc23c4ccaf27c333a31850fb589f99f0d0b5d0c26b0b80cd0cbde11e19` |
-| `roster.html` | `1528e50853ae440a6e7d0714863f46bd51629cd106af439cb5a66b378307b3f7` |
+| `roster.json` | `d637343e752b557ffd329061fccc48326d027ea2a5a688274ad42dd6da05f043` |
+| `roster.html` | `9f0c6764b81d8da6ba930f4d1f531b5cf3ab9136de76f2c9516b501e4a724bec` |
 | `sigils/muse_ia51c03moj-1ed07ac14c6f.png` | `4e34c3fc616447a7a99c931923df92956dbb6611f3d8dbab2cf54dc533029989` |
 
 ## Licence and affiliation

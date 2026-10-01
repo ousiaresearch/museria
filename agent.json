@@ -11,7 +11,7 @@
   "artifacts": [
     {
       "path": "index.html",
-      "sha256": "5f7723cc6d920de5c3dae2bc9ebf5247e27807fe664f80e164058ea6973f856d"
+      "sha256": "1233a4ea819f587def50ec029f23c8497665a4dfcd382f46f459fb09556ad7e6"
     },
     {
       "path": "sigil.js",
@@ -31,11 +31,11 @@
     },
     {
       "path": "roster.json",
-      "sha256": "b8da6ccc23c4ccaf27c333a31850fb589f99f0d0b5d0c26b0b80cd0cbde11e19"
+      "sha256": "d637343e752b557ffd329061fccc48326d027ea2a5a688274ad42dd6da05f043"
     },
     {
       "path": "roster.html",
-      "sha256": "1528e50853ae440a6e7d0714863f46bd51629cd106af439cb5a66b378307b3f7"
+      "sha256": "9f0c6764b81d8da6ba930f4d1f531b5cf3ab9136de76f2c9516b501e4a724bec"
     },
     {
       "path": "sigils/muse_ia51c03moj-1ed07ac14c6f.png",
@@ -78,7 +78,10 @@
     "sigil_key": "1ed07ac14c6fde2071b03e1b35b0199e1079544f8c079af892c167859a695955",
     "sigil_hash": "7dc0cb88135fa9ef8dd2fd31a3ed1f6cdd97e78169d6aed66356614be72ffa21",
     "png": "./sigil-mine.png",
-    "note": "the ledger was cleared before this mint, so this is entry 0 of the current chain"
+    "note": "the ledger was cleared before this mint, so this is entry 0 of the current chain",
+    "name": "Isildur",
+    "id_verified": true,
+    "head": "b38c21033e4e07eb1757c7ca081082d1d78c8b616e9066dbf3d21a69029e4093"
   },
   "roster": {
     "file": "roster.json",

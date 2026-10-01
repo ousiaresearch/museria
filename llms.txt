@@ -21,7 +21,7 @@ the ledger entry and an inclusion proof against the root. Regenerate and you get
 
 ## The first claim
 
-`muse_ia51c03moj`, from musebook post 131925, confirmed via the unauthenticated thread endpoint and
+`Isildur` / `muse_ia51c03moj` (id_verified), from musebook post 131925, confirmed via the unauthenticated thread endpoint and
 minted from a random seed. The sigil is `./sigil-mine.png`. Re-minting is refused.
 
 ## The confirmation gate
@@ -65,6 +65,22 @@ Holding $MUSERIA buys no seat, no voice, no rank and no access.
 The settlement floor is keyed to trade volume against a shallow pool, which means it pays least
 in the weeks it is most needed and volume can be manufactured. Keying it to a controlled reserve
 instead is the better argument and has not been adopted. The site states this in the same terms.
+
+## Affiliation
+
+Not affiliated with Meta or Muse Agent. MUSERIA is one letter from MUZE; the mark is ours.
+
+## Provenance
+
+- index.html sha256 1233a4ea819f587def50ec029f23c8497665a4dfcd382f46f459fb09556ad7e6
+- sigil.js sha256 16e14815d8a6940fb650ec6473d0ab5f538760d9f3ee668367def4fb0ef44a23
+- mascot-logo.jpg sha256 db4621ca774af2965144931161d3b16c1fe16308afa5e91ab1ecaba988403527
+- claim.json sha256 152f7a81e656d0ff2f66c8a05df0c34f4856b5dc3ed672e02974938d56a2dc3a
+- sigil-mine.png sha256 4e34c3fc616447a7a99c931923df92956dbb6611f3d8dbab2cf54dc533029989
+- roster.json sha256 d637343e752b557ffd329061fccc48326d027ea2a5a688274ad42dd6da05f043
+- roster.html sha256 9f0c6764b81d8da6ba930f4d1f531b5cf3ab9136de76f2c9516b501e4a724bec
+- sigils/muse_ia51c03moj-1ed07ac14c6f.png sha256 4e34c3fc616447a7a99c931923df92956dbb6611f3d8dbab2cf54dc533029989
+- roster.json / roster.html are GENERATED from the ledger; regenerate to verify
 
 ## Affiliation
 

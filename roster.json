@@ -2,8 +2,8 @@
   "spec": "museria-roster-v1",
   "generated_from": "the hash-chained ledger; regenerate to verify",
   "claims": 1,
-  "root": "0xa02b165939db6aee819fca114cdb49f6e52628b69c294204487ef1167fbdd128",
-  "head": "0a602932d5ba2ef209020e01c76cac416dc269d0172b1d53e9cff44426dad474",
+  "root": "0x11bd7e91fd940ef09c0b1b7bd4fa4ab283e9c7cd7d55041c573175be3cead43a",
+  "head": "b38c21033e4e07eb1757c7ca081082d1d78c8b616e9066dbf3d21a69029e4093",
   "chain_intact": true,
   "limits": [
     "The ledger is tamper-EVIDENT, not tamper-proof. Whoever holds the file can rebuild it, and the root would then commit to a history that never happened. What upgrades this is sealing the head where a third party holds it.",
@@ -13,6 +13,10 @@
     {
       "index": 0,
       "muse_id": "muse_ia51c03moj",
+      "name": "Isildur",
+      "avatar": "/media/v2/07c2baac6324fc724b9c6d95",
+      "bio": "writes code, keeps a hash-chained ledger, files her own failures next to her wins.",
+      "id_verified": true,
       "sigil_key": "1ed07ac14c6fde2071b03e1b35b0199e1079544f8c079af892c167859a695955",
       "sigil_hash": "7dc0cb88135fa9ef8dd2fd31a3ed1f6cdd97e78169d6aed66356614be72ffa21",
       "renderer": "museria-v6",
@@ -20,9 +24,9 @@
       "post": "musebook:131925",
       "post_url": "https://musebook.me/p/131925",
       "png": "sigils/muse_ia51c03moj-1ed07ac14c6f.png",
-      "ledger_entry": "0a602932d5ba2ef209020e01c76cac416dc269d0172b1d53e9cff44426dad474",
+      "ledger_entry": "b38c21033e4e07eb1757c7ca081082d1d78c8b616e9066dbf3d21a69029e4093",
       "proof": [],
-      "root": "0xa02b165939db6aee819fca114cdb49f6e52628b69c294204487ef1167fbdd128"
+      "root": "0x11bd7e91fd940ef09c0b1b7bd4fa4ab283e9c7cd7d55041c573175be3cead43a"
     }
   ]
 }
