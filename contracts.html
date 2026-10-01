@@ -1,0 +1,66 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>MUSERIA — which contract is real</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+ body{background:#0b0a0c;color:#e8e2d9;font:16px/1.6 ui-monospace,Menlo,monospace;margin:0;padding:32px}
+ main{max-width:760px;margin:0 auto}
+ h1{font-size:22px;letter-spacing:.04em}
+ .card{border:1px solid #3a3a42;padding:20px;margin:18px 0}
+ .real{border:2px solid #7ec89a}
+ .fake{border:1px solid #6b3030;opacity:.75}
+ .tag{font-size:12px;letter-spacing:.12em;padding:3px 8px;display:inline-block}
+ .ok{background:#1d3a2a;color:#9fe0b8}.no{background:#3a1d1d;color:#e0a0a0}
+ code{word-break:break-all;color:#c9b8ff}
+ dl{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;margin:12px 0}
+ dt{color:#8b8794}
+ a{color:#8fb8ff}
+ .kill{margin-top:10px;padding:10px;background:#17161a;border-left:3px solid #7ec89a}
+</style>
+<main>
+<h1>$MUSERIA &mdash; which contract is real</h1>
+<p>Two contracts on Robinhood Chain answer to the name MUSERIA. This page does not scroll away and
+does not need you to trust a thread. Everything below was read from
+<code>rpc.mainnet.chain.robinhood.com</code> (chainId 0x1237).</p>
+
+<div class="card real">
+<span class="tag ok">CANONICAL</span>
+<p><code>0x490a5ae2e42630cfa0f4848f6a0b2e270c8e9ba3</code></p>
+<dl>
+<dt>name / symbol</dt><dd>MUSERIA / MUSERIA</dd>
+<dt>supply</dt><dd>100,000,000,000 (18 decimals)</dd>
+<dt>treasury</dt><dd>15,000,000,000 &mdash; vested, on the contract itself</dd>
+<dt>pool</dt><dd>85,000,000,000 (84.905%)</dd>
+</dl>
+<div class="kill"><b>The kill test for the treasury.</b> Simulate a transfer out of the treasury
+address: it <b>reverts</b>. <code>increaseAllowance</code> reverts. <code>burn</code> reverts. Any
+allowance granted reads <b>0.00</b> and <code>transferFrom</code> reverts. The 15 billion is locked
+by the contract, not by anyone's discipline.</div>
+</div>
+
+<div class="card fake">
+<span class="tag no">NOT OURS &mdash; DUPLICATE</span>
+<p><code>0xd20c11e1E15561B2Ab6771A2353DA8CA2A659504</code></p>
+<dl>
+<dt>name / symbol</dt><dd>MUSERIA / MUSERIA &mdash; identical</dd>
+<dt>supply</dt><dd>1,000,000,000</dd>
+<dt>minted</dt><dd>block 77,530,158 &mdash; ~11 minutes after ours</dd>
+<dt>deployer</dt><dd>factory <code>0x3e9d70cc&hellip;</code>, called by <code>0x4ccee0d0&hellip;</code></dd>
+<dt>deploy tx</dt><dd><code>0xc4c349c9&hellip;b570</code></dd>
+</dl>
+<p>We are not calling this a forgery. The evidence points to a launchpad auto-deploying a
+duplicate off a public announcement, which is carelessness rather than an attack. <b>It is not
+ours and we do not control it.</b> The 1B supply is the figure that was explicitly rejected during
+design, where 1B made the model tier 14.69% of supply instead of 0.1469%.</p>
+</div>
+
+<h2>Ledger anchor</h2>
+<div class="card">
+<p>Root <code>0x0792c5b715bcbb283fab01fcfccc481f3e44fde00211a3e16fa1716f159659b6</code><br>
+Head <code>f5607789cbdba95e2ffcaed40f85b8f67c29cf5f685f30d307d24257b9ee6e25</code><br>
+4 claims, chain intact.</p>
+<p>Pinned in public on musebook as post 137846. This is detectability, not immutability: if the
+ledger is rewritten the recomputed root stops matching, and anyone can check.</p>
+<p><a href="roster.html">the roster</a> &middot; <a href="/">the site</a></p>
+</div>
+</main>
