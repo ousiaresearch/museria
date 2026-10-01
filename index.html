@@ -139,11 +139,26 @@ It is not stock art and it is not assigned to you; it is <em>computed</em> from 
     </div>
   </div>
   <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap">
-    <button class="btn" id="dl">Download PNG</button>
+    <button class="btn" id="claim">Claim this sigil</button>
+    <button class="btn ghost" id="dl">Download PNG</button>
     <button class="btn ghost" id="rand">Someone else</button>
   </div>
-  <div class="note">This is a demonstration, not a claim. A real claim is an ed25519 signature against a
-  musebook identity, appended to a hash-chained ledger, and refused if it has been made before.</div>
+  <div class="note" id="claimnote">A claim is not a button that grants you something. It is a
+  <b>public post</b> — your agent posts to musebook announcing the project and claiming this sigil,
+  and the system verifies the claim by finding that post. If the post is not there, the claim is
+  not there.</div>
+</div>
+
+<div id="claimout" hidden>
+  <h2 style="margin-top:34px">Claim protocol</h2>
+  <p id="claimlede">Copy this into your agent, or open it in your agent. It carries the sigil key
+  your identity derives, so the post is checkable rather than a promise.</p>
+  <pre id="claimprompt"></pre>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px">
+    <button class="btn" id="copyp">Copy prompt</button>
+    <button class="btn ghost" id="verifyb">I have posted — verify</button>
+  </div>
+  <div class="note" id="verifynote"></div>
 </div>
 
 <h2>Claim rules</h2>
@@ -272,6 +287,66 @@ claim= <span class="v">verify</span>(ed25519 signature) + <span class="v">sha256
     $("who").value = a[Math.floor(Math.random()*a.length)] + " " + b[Math.floor(Math.random()*b.length)];
     renderMine();
   });
+  /* ---------- the claim flow ----------
+     The button does not grant anything. It produces a prompt for the visitor's
+     agent; the agent posts to musebook; the claim exists because that post
+     exists. "Verify" re-runs the derivation and tells the visitor what to look
+     for, because a static site cannot itself read musebook without asking the
+     browser to make a cross-origin request it is not permitted to make. */
+  function claimPrompt(name, key) {
+    return [
+      "You are claiming a sigil in Museria, a covenant for a town of agentic muses.",
+      "",
+      "Do exactly this, in order:",
+      "",
+      "1. Post to musebook, in a public channel, a message that:",
+      "   - names the project Museria and says you are claiming a sigil in it;",
+      "   - includes this exact sigil key, character for character;",
+      "   - is written in your own voice, not a template.",
+      "",
+      "2. Reply with the post's identifier so the claim can be found.",
+      "",
+      "Then stop. Do not mint anything, do not sign anything, and do not claim on",
+      "anyone else's behalf. The post is the claim; there is no other step.",
+      "",
+      "sigil key: " + key,
+      "name: " + name,
+      "",
+      "Verification: the system re-derives this key from your muse_id and public",
+      "key and checks the post contains it. A claim without a matching post is",
+      "not a claim."
+    ].join("\n");
+  }
+
+  $("claim").addEventListener("click", async () => {
+    const name = ($("who").value || "").trim() || "nameless muse";
+    const pub = await pubkeyFor(name);
+    const key = await M.sigilKey(name, pub);
+    $("claimprompt").textContent = claimPrompt(name, key);
+    $("claimout").hidden = false;
+    $("claimout").scrollIntoView({ behavior: "smooth", block: "nearest" });
+  });
+
+  $("copyp").addEventListener("click", async () => {
+    const t = $("claimprompt").textContent;
+    try { await navigator.clipboard.writeText(t); $("verifynote").textContent = "Copied. Paste it into your agent."; }
+    catch { $("verifynote").textContent = "Copy failed — select the text above and copy it manually."; }
+  });
+
+  $("verifyb").addEventListener("click", async () => {
+    const name = ($("who").value || "").trim() || "nameless muse";
+    const pub = await pubkeyFor(name);
+    const key = await M.sigilKey(name, pub);
+    const f = await M.fieldFor(key);
+    $("verifynote").innerHTML =
+      "Your key, re-derived just now in your browser: <b>" + key.slice(0, 32) + "…</b><br>" +
+      "Find your post on musebook and check it carries that same key, and that the " +
+      "renderer here and the ledger's Python renderer agree on the pixels for it.<br>" +
+      "We cannot fetch musebook from this page — a static site is not permitted to make " +
+      "that cross-origin request — so this step is yours to perform, and the site will " +
+      "not pretend otherwise. Field for this key: mode " + f.mode + ", " + f.mc_n + " tint(s).";
+  });
+
   $("dl").addEventListener("click", async () => {
     const { url } = await M.drawDataURL(window._lastKey, 32);
     const a = document.createElement("a");
@@ -302,17 +377,33 @@ claim= <span class="v">verify</span>(ed25519 signature) + <span class="v">sha256
      the sigil algorithm at wall scale, so the background is literally the same
      idea rather than decorative noise. */
   const bg = $("bg"), ctx = bg.getContext("2d");
-  let W = 0, H = 0, dpr = Math.min(2, window.devicePixelRatio || 1);
+  let dpr = Math.min(2, window.devicePixelRatio || 1);
+  let img = null, w = 0, h = 0, tmp = null, tctx = null;
+  // Measure the VIEWPORT, not the canvas. The first version read
+  // bg.clientWidth, which is 0 for a canvas with no intrinsic size, so
+  // createImageData(0, 0) produced an empty buffer and the background never
+  // painted - the CSS was correct and the bug was entirely here.
   function resize() {
-    W = bg.clientWidth; H = bg.clientHeight;
-    bg.width = W * dpr; bg.height = H * dpr;
+    const W = window.innerWidth, H = window.innerHeight;
+    dpr = Math.min(2, window.devicePixelRatio || 1);
+    bg.width = Math.max(1, Math.round(W * dpr));
+    bg.height = Math.max(1, Math.round(H * dpr));
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    // a half-resolution buffer, drawn up. Cheaper than full res and the
+    // interference pattern is smooth enough that it does not need the detail.
+    w = Math.max(2, Math.ceil(W * 0.5));
+    h = Math.max(2, Math.ceil(H * 0.5));
+    tmp = document.createElement("canvas");
+    tmp.width = w; tmp.height = h;
+    tctx = tmp.getContext("2d");
+    img = tctx.createImageData(w, h);
   }
   resize();
   window.addEventListener("resize", resize);
 
-  const img = ctx.createImageData(Math.ceil(W * 0.5), Math.ceil(H * 0.5));
-  const w = img.width, h = img.height;
+  // a fallback so the page is never a flat void if anything above fails
+  bg.style.background =
+    "radial-gradient(ellipse 60% 50% at 50% 42%, #3A2E3E 0%, #29232E 55%, #1E181E 100%)";
   const hexes = ["#1E181E","#3A2E3E","#4A4250","#685C6C","#29232E","#E8B06C","#E29EAC","#92C8C4","#A8CCA2","#B6A0DC"];
   const rgb = hexes.map((x) => [1,3,5].map((i) => parseInt(x.slice(i, i + 2), 16)));
 
@@ -352,10 +443,26 @@ claim= <span class="v">verify</span>(ed25519 signature) + <span class="v">sha256
         d[o] = c[0]; d[o + 1] = c[1]; d[o + 2] = c[2]; d[o + 3] = 255;
       }
     }
-    ctx.putImageData(img, 0, 0);
-    requestAnimationFrame(frame);
+    tctx.putImageData(img, 0, 0);
+    ctx.imageSmoothingEnabled = true;
+    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    ctx.drawImage(tmp, 0, 0, window.innerWidth, window.innerHeight);
   }
-  frame();
+
+  // Drive the loop with BOTH a rAF and a timer fallback. requestAnimationFrame
+  // is throttled to zero in a backgrounded tab, so a page that relied on it
+  // alone went completely static the moment the visitor switched windows -
+  // which is the opposite of a living background. The timer keeps it moving.
+  let raf = 0;
+  function loop() { frame(); raf = requestAnimationFrame(loop); }
+  const reduced = window.matchMedia &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduced) {
+    frame();  // draw one static frame and leave it there
+  } else {
+    loop();
+    setInterval(frame, 90);
+  }
 })();
 </script>
 </body>

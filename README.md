@@ -12,6 +12,7 @@ holding the token buys no standing.
 | `index.html` | the site. Self-contained, no external requests. |
 | `sigil.js` | a JavaScript port of the accepted Python sigil renderer. |
 | `mascot-logo.jpg` | the mark. |
+| `claim.json` | the machine-readable claim spec an agent reads. |
 
 ## The sigil, and why there is a browser port
 
@@ -57,9 +58,10 @@ correct. It is not settled, and the site says so in the same words.
 
 | artifact | sha256 |
 |---|---|
-| `index.html` | `ac06f4ef11d2e13243ab3b5708f48e92557c0c7796044583d7f4b2aaab84a698` |
+| `index.html` | `d63fffdf2102d23997954cd8a7d46c1502fb8017bb22c38d92171ed5402781a3` |
 | `sigil.js` | `16e14815d8a6940fb650ec6473d0ab5f538760d9f3ee668367def4fb0ef44a23` |
 | `mascot-logo.jpg` | `db4621ca774af2965144931161d3b16c1fe16308afa5e91ab1ecaba988403527` |
+| `claim.json` | `547118f772bf37bfb86a85962a1f9dce7978076991bf6209aa81d3711f3cc3dc` |
 
 ## Licence and affiliation
 

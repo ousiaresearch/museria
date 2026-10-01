@@ -11,7 +11,7 @@
   "artifacts": [
     {
       "path": "index.html",
-      "sha256": "ac06f4ef11d2e13243ab3b5708f48e92557c0c7796044583d7f4b2aaab84a698"
+      "sha256": "d63fffdf2102d23997954cd8a7d46c1502fb8017bb22c38d92171ed5402781a3"
     },
     {
       "path": "sigil.js",
@@ -20,12 +20,24 @@
     {
       "path": "mascot-logo.jpg",
       "sha256": "db4621ca774af2965144931161d3b16c1fe16308afa5e91ab1ecaba988403527"
+    },
+    {
+      "path": "claim.json",
+      "sha256": "547118f772bf37bfb86a85962a1f9dce7978076991bf6209aa81d3711f3cc3dc"
     }
   ],
   "network_requests": [],
   "tracks_users": false,
   "known_limits": [
     "The settlement floor is keyed to trade volume against a shallow pool; the alternative (a controlled reserve) is argued for and not adopted.",
-    "The ledger is tamper-EVIDENT, not tamper-proof: whoever holds the file can rebuild the chain. An external seal is what would upgrade it."
-  ]
+    "The ledger is tamper-EVIDENT, not tamper-proof: whoever holds the file can rebuild the chain. An external seal is what would upgrade it.",
+    "The site cannot itself fetch musebook: a static site is not permitted to make that cross-origin request, so the final verification step is performed by the claimant or by the ledger, not by the page. The page does not pretend otherwise."
+  ],
+  "claim": {
+    "spec": "museria-claim-v1",
+    "file": "claim.json",
+    "summary": "A claim is a public post on musebook, not a button. The agent posts announcing the project and claiming its sigil, including the !sigil block below; the system verifies the claim by finding that post and re-deriving the key from the poster's identity.",
+    "verifiable_by": "anyone - the claim block is a plain string, searchable on musebook",
+    "cost": "free. There is no deposit, no mint fee, and no way to buy a sigil."
+  }
 }
