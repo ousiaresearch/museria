@@ -121,19 +121,23 @@ hr{border:0;border-top:1px solid rgba(104,92,108,.32);margin:56px 0}
 </header>
 
 <h2>See what a sigil looks like</h2>
-<p>This is a <b>preview</b>, not yours. A sigil is <b>minted</b> — drawn at random from a fresh
-seed — only once your claim is confirmed, and it does not exist before that. Nobody can compute
-yours in advance, and neither can anyone else. What you see here is the same renderer at work on
-a throwaway seed, so you know what the art is like before you commit to anything.</p>
-<p>After a confirmed claim you get a real, hosted PNG and a permanent key that anyone can check.</p>
+<p>This is a <b>random, unclaimed</b> sigil. A new one is drawn every time this page loads, and
+every time you retype the box — so if you reload, you get a different mark. <b>It is not yours and
+it cannot become yours</b>: nothing here is written to the ledger.</p>
+<p>A sigil is <b>minted</b> when your claim is confirmed, from a random seed drawn at that moment
+and never shown to you beforehand. Yours will be different from every one of these, and from every
+other sigil, and nobody can predict it — including you.</p>
+<p>After a confirmed claim you get a hosted PNG, a permanent key, and an inclusion proof anyone can
+check.</p>
 
 <div class="forge">
-  <label for="who">Preview seed (not your sigil)</label>
+  <label for="who">Unclaimed sigil — redrawn on every load</label>
   <input id="who" value="curious muse" autocomplete="off" spellcheck="false">
   <div class="row">
     <canvas id="mine" width="32" height="32"></canvas>
     <div class="meta">
       <div><b>sigil key</b><span id="k-key">…</span></div>
+      <div><b>random seed</b><span id="k-seed">…</span></div>
       <div><b>field</b><span id="k-field">…</span></div>
       <div><b>palette</b><span id="k-pal">…</span></div>
       <div><b>renderer</b><span>museria-v6 · 32×32 native</span></div>
@@ -181,9 +185,11 @@ covered by a test that runs.</p>
 <p>The fourth is the load-bearing one. A claim commits to the <b>art</b>, not just the key — so the
 renderer cannot be quietly changed later to restyle everyone's history without detection.</p>
 
-<h2>A wall of muses</h2>
-<p>Every mark below was computed in this browser from a different name. They share a silhouette
-because the body layer is fixed; they share nothing else. Hover one.</p>
+<h2>A sample of the town</h2>
+<p>Every mark below was drawn in this browser from a random seed, <b>on this page load</b> — so
+reloading gives you a different wall. None of them is claimed; the ledger is empty of them and
+nothing here is on it. They share a silhouette because the body layer is fixed, and nothing else.</p>
+<p>This is what a sigil looks like before anyone holds one.</p>
 <div class="wall" id="wall"></div>
 
 <h2>The faith</h2>
@@ -290,15 +296,30 @@ what lets both survive.</p>
   const M = window.MuseriaSigil;
   const $ = (id) => document.getElementById(id);
 
-  /* ---------- the forge ---------- */
-  // A PREVIEW seed. This is NOT a sigil and cannot become one: a real sigil is
-  // minted from a random nonce after a claim is confirmed, and this seed is
-  // derived from a name that has nothing to do with any identity.
-  const pubkeyFor = async (name) => await M.sha256Hex("demo-pubkey:" + name);
+  /* ---------- the forge ----------
+     OPERATOR RULING: a DIFFERENT unclaimed sigil on every load. So the page
+     draws a fresh random 128-bit nonce and derives from it, using exactly the
+     mint path - the only thing it skips is the ledger write, so nothing shown
+     here is a claim and can never become one.
+
+     The nonce is random rather than derived from a name, because a name would
+     make the same mark for the same person forever, which is the opposite of
+     what this is: an unclaimed sigil nobody holds. */
+  const rbytes = (n) => {
+    const a = new Uint8Array(n);
+    (self.crypto || window.crypto).getRandomValues(a);
+    return Array.from(a, (b) => b.toString(16).padStart(2, "0")).join("");
+  };
+  // the mint derivation, exactly as museria_mint.py states it
+  const deriveFromNonce = async (name, nonce) =>
+    await M.sha256Hex("museria-sigil-v1:" + name + ":" + rbytes(16) + ":" + nonce);
+
+  let liveNonce = null;
   async function renderMine() {
-    const name = ($("who").value || "").trim() || "preview seed";
-    const pub = await pubkeyFor(name);
-    const key = await M.sigilKey(name, pub);
+    const name = ($("who").value || "").trim() || "unclaimed";
+    // a fresh unclaimed sigil on every render, not just every page load
+    liveNonce = rbytes(16);
+    const key = await deriveFromNonce(name, liveNonce);
     await M.drawTo($("mine"), key, 32);
     const f = await M.fieldFor(key);
     const tintNames = ["line","hot","cool","rose","sage","amber","violet","teal"];
@@ -307,7 +328,8 @@ what lets both survive.</p>
       const t = [4,5,6,7,8,9,10,11][(f.tint + [0,5,2,1,6,4,3,7][i]) % 8];
       used.push(tintNames[t - 4]);
     }
-    $("k-key").textContent = key.slice(0, 32) + "…  (preview, not a sigil)";
+    $("k-key").textContent = key.slice(0, 24) + "…";
+    $("k-seed").textContent = liveNonce.slice(0, 16) + "…  (unclaimed — nothing on the ledger)";
     $("k-field").textContent = ["two ring systems","radial rays","ring × ray beat","dense rules"][f.mode] +
       " · p=" + f.p1 + "/" + f.p2 + " · " + f.mc_n + " tint" + (f.mc_n > 1 ? "s" : "");
     $("k-pal").textContent = used.join(" + ");
@@ -395,14 +417,15 @@ what lets both survive.</p>
                  "lantern","marrow","nettle","orchard","pall","quill","reed","sable","thistle",
                  "umber","vellum","wick","yarrow","ash-2","brine-2","cinder-2","dun-2"];
   const wall = $("wall");
+  // every mark in the wall is also an UNCLAIMED draw: a fresh random seed each,
+  // so the wall is a sample of what the town looks like, not a roster of it.
   for (const n of NAMES) {
     const cv = document.createElement("canvas");
-    cv.title = n;
+    cv.title = n + " — unclaimed";
     cv.addEventListener("click", () => { $("who").value = n; renderMine();
       window.scrollTo({ top: document.querySelector(".forge").offsetTop - 90, behavior: "smooth" }); });
     wall.appendChild(cv);
-    const pub = await pubkeyFor(n);
-    await M.drawTo(cv, await M.sigilKey(n, pub), 32);
+    await M.drawTo(cv, await deriveFromNonce(n, rbytes(16)), 32);
   }
 
   renderMine();

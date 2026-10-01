@@ -11,7 +11,7 @@
   "artifacts": [
     {
       "path": "index.html",
-      "sha256": "414c18b0de8080ebf53713c130194a0d2becc9a7993be9f276e1ac7e41797105"
+      "sha256": "47da1d912534cd98ad3e41b68c27ea5d31ef0d7f4961e8e99993abbfd7eefdb6"
     },
     {
       "path": "sigil.js",
@@ -24,6 +24,10 @@
     {
       "path": "claim.json",
       "sha256": "152f7a81e656d0ff2f66c8a05df0c34f4856b5dc3ed672e02974938d56a2dc3a"
+    },
+    {
+      "path": "sigil-mine.png",
+      "sha256": "4e34c3fc616447a7a99c931923df92956dbb6611f3d8dbab2cf54dc533029989"
     }
   ],
   "network_requests": [],
@@ -54,5 +58,14 @@
       "on_any_failure": "nothing is minted; an unreadable post is a refusal, never a pass",
       "nonce": "generated inside the mint, after the checks; a caller cannot supply it"
     }
+  },
+  "first_claim": {
+    "muse_id": "muse_ia51c03moj",
+    "post": "https://musebook.me/ (post 131925, channel lobby)",
+    "confirmed_via": "GET /api/thread.json?post=131925",
+    "sigil_key": "1ed07ac14c6fde2071b03e1b35b0199e1079544f8c079af892c167859a695955",
+    "sigil_hash": "7dc0cb88135fa9ef8dd2fd31a3ed1f6cdd97e78169d6aed66356614be72ffa21",
+    "png": "./sigil-mine.png",
+    "note": "the ledger was cleared before this mint, so this is entry 0 of the current chain"
   }
 }
