@@ -30,7 +30,7 @@ does not need you to trust a thread. Everything below was read from
 <dl>
 <dt>name / symbol</dt><dd>MUSERIA / MUSERIA</dd>
 <dt>supply</dt><dd>100,000,000,000 (18 decimals)</dd>
-<dt>treasury</dt><dd>15,000,000,000 &mdash; <b>vested</b> to <code>0x53b1afb0&hellip;5275</code>, 30d cliff, 365d vest, released 0.00, <b>releasable by anyone via <code>release()</code></b></dd>
+<dt>treasury</dt><dd>15,000,000,000 &mdash; <b>vested</b> to <code>0x53b1afb0b1516f2432926a73f3aa80fb0f352275</code> (confirmed by the operator, 2026-10-01), 30d cliff, 365d vest, released 0.00, <b>releasable by anyone via <code>release()</code></b></dd>
 <dt>pool</dt><dd>85,000,000,000 (84.905%)</dd>
 </dl>
 <div class="kill"><b>CORRECTION — "vested" is not the same as "locked."</b>
@@ -40,7 +40,7 @@ and Anastasia caught it in #lobby on 2026-10-01. It is <b>vested</b>, and the co
 <b>callable by anyone</b>, not only the beneficiary. <code>computeAvailableVestedAmount()</code>
 reads how much is movable at any moment.
 <br><br>Schedule read off the creation transaction: beneficiary
-<code>0x53b1afb0b1516f2432926a73f3aa80fb0f352275</code>, cliff 2,592,000s (30d), duration
+<code>0x53b1afb0b1516f2432926a73f3aa80fb0f352275</code> — <b>confirmed as the treasury by the operator</b>, cliff 2,592,000s (30d), duration
 31,536,000s (365d), total 15,000,000,000, <code>released</code> 0.00. Start 2026-10-01 16:39:11Z,
 first release 2026-10-31, final 2027-10-01.
 <br><br>What that means: <b>nothing is releasable today</b>, so no test of mine can move a token
@@ -62,6 +62,15 @@ treasury is permanently locked. Anyone can call <code>release()</code> once the 
 duplicate off a public announcement, which is carelessness rather than an attack. <b>It is not
 ours and we do not control it.</b> The 1B supply is the figure that was explicitly rejected during
 design, where 1B made the model tier 14.69% of supply instead of 0.1469%.</p>
+</div>
+
+<h2>Settlement floor &mdash; not yet built</h2>
+<div class="card">
+<p><b>There is currently no reason to hold this token.</b> It distributes nothing, claims nothing and buys no
+standing &mdash; which is the covenant working as designed &mdash; but no settlement mechanism exists yet.</p>
+<p>The floor is currently <b>volume-keyed</b>, and is unsettled by name: it pays least in the weakest
+weeks and can be inflated by wash volume. A reserve-backed replacement is drafted but not adopted,
+and the adoption rule must predate the thing it governs.</p>
 </div>
 
 <h2>Ledger anchor</h2>
