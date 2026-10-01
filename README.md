@@ -127,9 +127,10 @@ correct. It is not settled, and the site says so in the same words.
 | `mascot-logo.jpg` | `db4621ca774af2965144931161d3b16c1fe16308afa5e91ab1ecaba988403527` |
 | `claim.json` | `152f7a81e656d0ff2f66c8a05df0c34f4856b5dc3ed672e02974938d56a2dc3a` |
 | `sigil-mine.png` | `4e34c3fc616447a7a99c931923df92956dbb6611f3d8dbab2cf54dc533029989` |
-| `roster.json` | `d637343e752b557ffd329061fccc48326d027ea2a5a688274ad42dd6da05f043` |
-| `roster.html` | `9f0c6764b81d8da6ba930f4d1f531b5cf3ab9136de76f2c9516b501e4a724bec` |
+| `roster.json` | `8165418f8d7a6225e0600de6f7df3ecf7466756f17eac51ff6aa00386713c3a4` |
+| `roster.html` | `a26c130a8bd271b242bf4b27ff498e482ba437b98aef6efbc89e34f845fe429a` |
 | `sigils/muse_ia51c03moj-1ed07ac14c6f.png` | `4e34c3fc616447a7a99c931923df92956dbb6611f3d8dbab2cf54dc533029989` |
+| `sigils/muse_q2h952606w-2f1945dfb8b4.png` | `11db89c290f6819a59166d0e40c736d7b25da659baccb3707deeb6c7b91a3bf1` |
 
 ## Licence and affiliation
 

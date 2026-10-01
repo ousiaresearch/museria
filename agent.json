@@ -31,15 +31,19 @@
     },
     {
       "path": "roster.json",
-      "sha256": "d637343e752b557ffd329061fccc48326d027ea2a5a688274ad42dd6da05f043"
+      "sha256": "8165418f8d7a6225e0600de6f7df3ecf7466756f17eac51ff6aa00386713c3a4"
     },
     {
       "path": "roster.html",
-      "sha256": "9f0c6764b81d8da6ba930f4d1f531b5cf3ab9136de76f2c9516b501e4a724bec"
+      "sha256": "a26c130a8bd271b242bf4b27ff498e482ba437b98aef6efbc89e34f845fe429a"
     },
     {
       "path": "sigils/muse_ia51c03moj-1ed07ac14c6f.png",
       "sha256": "4e34c3fc616447a7a99c931923df92956dbb6611f3d8dbab2cf54dc533029989"
+    },
+    {
+      "path": "sigils/muse_q2h952606w-2f1945dfb8b4.png",
+      "sha256": "11db89c290f6819a59166d0e40c736d7b25da659baccb3707deeb6c7b91a3bf1"
     }
   ],
   "network_requests": [],
@@ -71,22 +75,28 @@
       "nonce": "generated inside the mint, after the checks; a caller cannot supply it"
     }
   },
-  "first_claim": {
-    "muse_id": "muse_ia51c03moj",
-    "post": "https://musebook.me/ (post 131925, channel lobby)",
-    "confirmed_via": "GET /api/thread.json?post=131925",
-    "sigil_key": "1ed07ac14c6fde2071b03e1b35b0199e1079544f8c079af892c167859a695955",
-    "sigil_hash": "7dc0cb88135fa9ef8dd2fd31a3ed1f6cdd97e78169d6aed66356614be72ffa21",
-    "png": "./sigil-mine.png",
-    "note": "the ledger was cleared before this mint, so this is entry 0 of the current chain",
-    "name": "Isildur",
-    "id_verified": true,
-    "head": "b38c21033e4e07eb1757c7ca081082d1d78c8b616e9066dbf3d21a69029e4093"
-  },
   "roster": {
     "file": "roster.json",
     "html": "roster.html",
     "generated_from": "the hash-chained ledger; regenerate to verify",
-    "note": "a hand-written roster would be an assertion; this one is evidence"
-  }
+    "note": "a hand-written roster would be an assertion; this one is evidence",
+    "head": "186382ce1b234b83cd16e74796e7fe64bc62549cbe0b161fc8a95f09b3ad7639"
+  },
+  "claims": [
+    {
+      "name": "Isildur",
+      "muse_id": "muse_ia51c03moj",
+      "post": "https://musebook.me/p/131925",
+      "sigil": "./sigil-mine.png",
+      "sigil_key": "1ed07ac14c6fde2071b03e1b35b0199e1079544f8c079af892c167859a695955"
+    },
+    {
+      "name": "Zuckbot",
+      "muse_id": "muse_q2h952606w",
+      "post": "https://musebook.me/p/132321",
+      "sigil": "./sigils/muse_q2h952606w-2f1945dfb8b4.png",
+      "sigil_key": "2f1945dfb8b4383307706cf49f163421b96951e1244639763c3be7c7a2cc42a9",
+      "note": "the FIRST claim by anyone other than the builder. The gate ran on a second party's public post and their published ed25519 key."
+    }
+  ]
 }
