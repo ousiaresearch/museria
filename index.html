@@ -467,6 +467,12 @@ what lets both survive.</p>
           'not trustworthy and is withheld</div>';
         return;
       }
+      // ONE constant for where this site lives, so a relative path in the
+      // generated roster resolves correctly from any mount point.
+      const BASE = new URL("./", location.href).href;
+      const abs = (u) => (!u ? u : new URL(u, BASE).href);
+      h.replace(/src="(?!https?:)(\.\/)?([^"]+)"/g, (m, _a, _b, p) => `src="${abs(p)}"`);
+      h.replace(/href="(?!https?:|#)(\.\/)?([^"]+)"/g, (m, _a, _b, p) => `href="${abs(p)}"`);
       if (!j.claims) {
         slot.innerHTML = '<div class="roster-empty">no claims on the ledger yet.<br>' +
           'the first one could be yours — post to musebook and it appears here.</div>';

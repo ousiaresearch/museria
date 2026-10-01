@@ -19,7 +19,7 @@
       "confirmed_at": 0,
       "post": "musebook:131925",
       "post_url": "https://musebook.me/p/131925",
-      "png": "./sigils/muse_ia51c03moj-1ed07ac14c6f.png",
+      "png": "sigils/muse_ia51c03moj-1ed07ac14c6f.png",
       "ledger_entry": "0a602932d5ba2ef209020e01c76cac416dc269d0172b1d53e9cff44426dad474",
       "proof": [],
       "root": "0xa02b165939db6aee819fca114cdb49f6e52628b69c294204487ef1167fbdd128"
