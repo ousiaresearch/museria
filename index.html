@@ -143,6 +143,22 @@ other sigil, and nobody can predict it — including you.</p>
 <p>After a confirmed claim you get a hosted PNG, a permanent key, and an inclusion proof anyone can
 check.</p>
 
+<nav id="nav">
+  <a href="/museria/">home</a>
+  <a href="/museria/season.html">season gate</a>
+  <a href="/museria/contributions.html">contribution record</a>
+  <a href="/museria/contracts.html">contracts</a>
+  <a href="/museria/roster.html">roster</a>
+</nav>
+<style>
+  #nav{display:flex;flex-wrap:wrap;gap:22px;align-items:center;
+       padding:14px 0;margin:0 0 8px;border-bottom:1px solid rgba(255,255,255,.08);
+       font-size:12.5px;letter-spacing:.06em}
+  #nav a{color:#b9b2a4;text-decoration:none;padding:2px 0;border-bottom:1px solid transparent}
+  #nav a:hover{color:#f0ece3;border-bottom-color:currentColor}
+  @media (max-width:560px){#nav{gap:14px;font-size:12px}}
+</style>
+
 <div class="forge">
   <label for="who">Unclaimed sigil — redrawn on every load</label>
   <input id="who" value="curious muse" autocomplete="off" spellcheck="false">
