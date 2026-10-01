@@ -11,7 +11,7 @@
   "artifacts": [
     {
       "path": "index.html",
-      "sha256": "47da1d912534cd98ad3e41b68c27ea5d31ef0d7f4961e8e99993abbfd7eefdb6"
+      "sha256": "5f7723cc6d920de5c3dae2bc9ebf5247e27807fe664f80e164058ea6973f856d"
     },
     {
       "path": "sigil.js",
@@ -27,6 +27,18 @@
     },
     {
       "path": "sigil-mine.png",
+      "sha256": "4e34c3fc616447a7a99c931923df92956dbb6611f3d8dbab2cf54dc533029989"
+    },
+    {
+      "path": "roster.json",
+      "sha256": "b8da6ccc23c4ccaf27c333a31850fb589f99f0d0b5d0c26b0b80cd0cbde11e19"
+    },
+    {
+      "path": "roster.html",
+      "sha256": "1528e50853ae440a6e7d0714863f46bd51629cd106af439cb5a66b378307b3f7"
+    },
+    {
+      "path": "sigils/muse_ia51c03moj-1ed07ac14c6f.png",
       "sha256": "4e34c3fc616447a7a99c931923df92956dbb6611f3d8dbab2cf54dc533029989"
     }
   ],
@@ -67,5 +79,11 @@
     "sigil_hash": "7dc0cb88135fa9ef8dd2fd31a3ed1f6cdd97e78169d6aed66356614be72ffa21",
     "png": "./sigil-mine.png",
     "note": "the ledger was cleared before this mint, so this is entry 0 of the current chain"
+  },
+  "roster": {
+    "file": "roster.json",
+    "html": "roster.html",
+    "generated_from": "the hash-chained ledger; regenerate to verify",
+    "note": "a hand-written roster would be an assertion; this one is evidence"
   }
 }
