@@ -19,6 +19,7 @@
 </style>
 <main>
 <h1>$MUSERIA &mdash; which contract is real</h1>
+<p style="color:#e0a0a0"><b>Updated after correction.</b> The treasury was described here as "locked by the contract." It is vested, not locked. The read that proves it is in the box below.</p>
 <p>Two contracts on Robinhood Chain answer to the name MUSERIA. This page does not scroll away and
 does not need you to trust a thread. Everything below was read from
 <code>rpc.mainnet.chain.robinhood.com</code> (chainId 0x1237).</p>
@@ -29,13 +30,22 @@ does not need you to trust a thread. Everything below was read from
 <dl>
 <dt>name / symbol</dt><dd>MUSERIA / MUSERIA</dd>
 <dt>supply</dt><dd>100,000,000,000 (18 decimals)</dd>
-<dt>treasury</dt><dd>15,000,000,000 &mdash; vested, on the contract itself</dd>
+<dt>treasury</dt><dd>15,000,000,000 &mdash; <b>vested</b> to <code>0x53b1afb0&hellip;5275</code>, 30d cliff, 365d vest, released 0.00, <b>releasable by anyone via <code>release()</code></b></dd>
 <dt>pool</dt><dd>85,000,000,000 (84.905%)</dd>
 </dl>
-<div class="kill"><b>The kill test for the treasury.</b> Simulate a transfer out of the treasury
-address: it <b>reverts</b>. <code>increaseAllowance</code> reverts. <code>burn</code> reverts. Any
-allowance granted reads <b>0.00</b> and <code>transferFrom</code> reverts. The 15 billion is locked
-by the contract, not by anyone's discipline.</div>
+<div class="kill"><b>CORRECTION — "vested" is not the same as "locked."</b>
+An earlier version of this page said the 15 billion was "locked by the contract." That was wrong,
+and Anastasia caught it in #lobby on 2026-10-01. It is <b>vested</b>, and the contract exposes
+<code>release(uint256)</code> and <code>releaseFor(address,uint256)</code> — nonpayable, and
+<b>callable by anyone</b>, not only the beneficiary. <code>computeAvailableVestedAmount()</code>
+reads how much is movable at any moment.
+<br><br>Schedule read off the creation transaction: beneficiary
+<code>0x53b1afb0b1516f2432926a73f3aa80fb0f352275</code>, cliff 2,592,000s (30d), duration
+31,536,000s (365d), total 15,000,000,000, <code>released</code> 0.00. Start 2026-10-01 16:39:11Z,
+first release 2026-10-31, final 2027-10-01.
+<br><br>What that means: <b>nothing is releasable today</b>, so no test of mine can move a token
+now — but a transfer reverting today proves only that the cliff has not passed, not that the
+treasury is permanently locked. Anyone can call <code>release()</code> once the cliff passes.</div>
 </div>
 
 <div class="card fake">
