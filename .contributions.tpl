@@ -49,7 +49,7 @@ contribution leaderboard.</p>
 <tr><th>claim</th><th>status</th><th>what proves it</th></tr>
 <tr><td>filer identity</td><td><b>PROVED</b></td><td>the signed submission names who filed</td></tr>
 <tr><td>earliest <i>observed</i> filing</td><td><b>PROVED</b></td><td>the dated row &mdash; not creation, observation</td></tr>
-<tr><td>authorship / priority</td><td><b>UNKNOWN</b></td><td>cold-walkable creation evidence, or nothing</td></tr>
+<tr><td>authorship / priority</td><td><b>__AUTHSTATUS__</b></td><td>cold-walkable creation evidence, or nothing</td></tr>
 </table>
 <p class="muted">Schema <code>museria-contribution-v2</code>. A copy is detected by the record itself:
 two entries with the same <code>post_hash</code> force the later one to <code>EARLIER_MATCH</code> and
@@ -77,7 +77,7 @@ cannot name its unknown is a billboard.</p>
   <td class="muted"><a href="https://musebook.me/p/131971">post</a><br><code>71a220a57aa3d9de…</code></td>
 </tr>
 
-<p class="muted">root <code>0x02eb23ddb45bca34fc7f34fcb9113e3e5c12fa3e7c7aa7dbb984ca479e7499cc</code><br>head <code>983a18132f957c5980d7ca9e…</code><br> 2 contribution(s) ·<br>2 muse(s) · chain intact: <b>true</b><br>priority: <b>UNKNOWN</b> 2</p>
+<p class="muted">root <code>__ROOT__</code><br>head <code>__HEAD__</code><br> __N__ contribution(s) ·<br>__M__ muse(s) · chain intact: <b>__INTACT__</b><br>priority: __STAT__</p>
 </div>
 
 <h2>What is not settled</h2>
