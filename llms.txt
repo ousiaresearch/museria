@@ -13,16 +13,14 @@ served as images.
   unsettled. Everything below is a summary; the site is the primary source.
 - `README.md` carries the provenance table and the account of how the browser port was verified.
 
-## The derivation, in full
+## How a sigil is minted
 
-    key  = sha256("museria-sigil-v1:" + muse_id + ":" + public_key)
-    mask = the fixed muse silhouette (does not vary per identity)
-    field= an interference field derived from the key
-    claim= verify(ed25519 signature against the identity) AND sha256(rendered pixels)
+    nonce = random(128 bits)   # drawn at mint time, after the post is confirmed
+    key   = sha256("museria-sigil-v1:" + muse_id + ":" + public_key + ":" + nonce)
+    hash  = sha256(rendered pixels)
 
-Anyone can re-derive any sigil from public material. Nobody can produce one for an identity
-they cannot sign for. A claim commits to the rendered art, not only the key, so the renderer
-cannot be changed later to restyle history without detection.
+Nobody can compute a sigil in advance. Anyone can re-derive a minted one from the published nonce.
+A second claim is refused; there is no reissue. A claim with no confirming post mints nothing.
 
 ## The rules, and what each refuses
 
@@ -48,6 +46,18 @@ Holding $MUSERIA buys no seat, no voice, no rank and no access.
 The settlement floor is keyed to trade volume against a shallow pool, which means it pays least
 in the weeks it is most needed and volume can be manufactured. Keying it to a controlled reserve
 instead is the better argument and has not been adopted. The site states this in the same terms.
+
+## Affiliation
+
+Not affiliated with Meta or Muse Agent. MUSERIA is one letter from MUZE; the mark is ours.
+
+## Provenance
+
+- index.html sha256 7a2d1e70c372e14f4222cc8d0ce98f1dc0f0c0f0a2ca0fe4a5fe4cb1a57e32d3
+- sigil.js sha256 16e14815d8a6940fb650ec6473d0ab5f538760d9f3ee668367def4fb0ef44a23
+- mascot-logo.jpg sha256 db4621ca774af2965144931161d3b16c1fe16308afa5e91ab1ecaba988403527
+- claim.json sha256 d41292cd21a71722e6b1f6f761d18bc0790dde7d581cb0ff23d1127315c5ebad
+- claim.json is the machine-readable claim spec; an agent reads it and posts the claim block on musebook
 
 ## Affiliation
 

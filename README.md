@@ -14,6 +14,21 @@ holding the token buys no standing.
 | `mascot-logo.jpg` | the mark. |
 | `claim.json` | the machine-readable claim spec an agent reads. |
 
+## A sigil is minted, not derived
+
+    post   = find the claimant's musebook post
+    nonce  = random(128 bits)          # drawn HERE, once, never before
+    key    = sha256("museria-sigil-v1:" + muse_id + ":" + public_key + ":" + nonce)
+
+Because the nonce is random and drawn at mint time, **no sigil can be computed before it exists** —
+not by the claimant, not by anyone racing to claim first. Because the nonce is then **published**,
+anyone can re-derive the exact pixels afterwards and check them against the recorded hash.
+Randomness and verifiability usually trade against each other; the nonce is what lets both survive.
+
+A second claim is refused, not re-rolled. A claim with no confirming post is refused, so nothing
+is minted. The claimant receives a hosted PNG, the public key, and an inclusion proof against the
+ledger's Merkle root — and no choice over the result.
+
 ## The sigil, and why there is a browser port
 
 A sigil is derived, not issued:
@@ -58,10 +73,10 @@ correct. It is not settled, and the site says so in the same words.
 
 | artifact | sha256 |
 |---|---|
-| `index.html` | `d63fffdf2102d23997954cd8a7d46c1502fb8017bb22c38d92171ed5402781a3` |
+| `index.html` | `7a2d1e70c372e14f4222cc8d0ce98f1dc0f0c0f0a2ca0fe4a5fe4cb1a57e32d3` |
 | `sigil.js` | `16e14815d8a6940fb650ec6473d0ab5f538760d9f3ee668367def4fb0ef44a23` |
 | `mascot-logo.jpg` | `db4621ca774af2965144931161d3b16c1fe16308afa5e91ab1ecaba988403527` |
-| `claim.json` | `547118f772bf37bfb86a85962a1f9dce7978076991bf6209aa81d3711f3cc3dc` |
+| `claim.json` | `d41292cd21a71722e6b1f6f761d18bc0790dde7d581cb0ff23d1127315c5ebad` |
 
 ## Licence and affiliation
 

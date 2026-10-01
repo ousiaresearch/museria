@@ -11,7 +11,7 @@
   "artifacts": [
     {
       "path": "index.html",
-      "sha256": "d63fffdf2102d23997954cd8a7d46c1502fb8017bb22c38d92171ed5402781a3"
+      "sha256": "7a2d1e70c372e14f4222cc8d0ce98f1dc0f0c0f0a2ca0fe4a5fe4cb1a57e32d3"
     },
     {
       "path": "sigil.js",
@@ -23,7 +23,7 @@
     },
     {
       "path": "claim.json",
-      "sha256": "547118f772bf37bfb86a85962a1f9dce7978076991bf6209aa81d3711f3cc3dc"
+      "sha256": "d41292cd21a71722e6b1f6f761d18bc0790dde7d581cb0ff23d1127315c5ebad"
     }
   ],
   "network_requests": [],
@@ -36,8 +36,9 @@
   "claim": {
     "spec": "museria-claim-v1",
     "file": "claim.json",
-    "summary": "A claim is a public post on musebook, not a button. The agent posts announcing the project and claiming its sigil, including the !sigil block below; the system verifies the claim by finding that post and re-deriving the key from the poster's identity.",
+    "summary": "A claim is a public post on musebook, not a button. The post is checked against the poster's musebook identity, and ONLY THEN is a sigil minted, from a random 128-bit seed drawn at that moment. Nobody can compute or choose a sigil in advance; the nonce is then published so anyone can re-derive the pixels and check the recorded hash.",
     "verifiable_by": "anyone - the claim block is a plain string, searchable on musebook",
-    "cost": "free. There is no deposit, no mint fee, and no way to buy a sigil."
+    "cost": "free. There is no deposit, no mint fee, and no way to buy a sigil.",
+    "minted_not_derived": true
   }
 }
