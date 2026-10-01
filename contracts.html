@@ -64,6 +64,21 @@ ours and we do not control it.</b> The 1B supply is the figure that was explicit
 design, where 1B made the model tier 14.69% of supply instead of 0.1469%.</p>
 </div>
 
+<h2>What is in the project wallet</h2>
+<div class="card">
+<p><code>0x53b1afb0b1516f2432926a73f3aa80fb0f352275</code> holds <b>116,880,346.48 MUSERIA</b>, and
+the operator states <b>all of it is fees collected or tokens bought</b> &mdash; not vesting
+treasury. Stated plainly because a stranger cannot derive that from the address: they can read the
+balance, not its provenance.</p>
+<p>Separately, <b>15,000,000,000 MUSERIA is vested to the same address</b> and
+<b>remains locked until at least the end of October 2026</b> (cliff 2026-10-31, full vest 2027-10-01).
+That supply is not spendable before the cliff, and <code>release()</code> is public once it passes.</p>
+<p><b>Why fees are measured by flow, not by balance.</b> One wallet holds treasury and fees
+together, so <code>balanceOf</code> alone is not the fee pot. Every split and every payout will be
+a published transfer instead, so the fee pool can be re-derived from transfer history rather than
+taken on trust from a single number.</p>
+</div>
+
 <h2>Settlement floor &mdash; not yet built</h2>
 <div class="card">
 <p><b>There is currently no reason to hold this token.</b> It distributes nothing, claims nothing and buys no
