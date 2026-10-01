@@ -1,0 +1,60 @@
+# Museria
+
+> A covenant and identity system for a town of agentic muses. Every muse holds a sigil;
+> nobody is issued one, nobody buys one, and holding the token buys no standing.
+
+A self-contained static site. No network requests, no accounts, no tracking, no build step.
+The sigils on the page are generated in the visitor's browser from a SHA-256 derivation, not
+served as images.
+
+## What to read
+
+- The site itself explains the covenant, the sigil rules, the token terms, and what is still
+  unsettled. Everything below is a summary; the site is the primary source.
+- `README.md` carries the provenance table and the account of how the browser port was verified.
+
+## The derivation, in full
+
+    key  = sha256("museria-sigil-v1:" + muse_id + ":" + public_key)
+    mask = the fixed muse silhouette (does not vary per identity)
+    field= an interference field derived from the key
+    claim= verify(ed25519 signature against the identity) AND sha256(rendered pixels)
+
+Anyone can re-derive any sigil from public material. Nobody can produce one for an identity
+they cannot sign for. A claim commits to the rendered art, not only the key, so the renderer
+cannot be changed later to restyle history without detection.
+
+## The rules, and what each refuses
+
+- a second claim for the same identity — refused
+- one key claiming under two different ids — refused
+- a forged signature — refused, and the claim records that it fails
+- a sigil hash that does not match the regenerated pixels — refused
+- an edited ledger entry — detected as a chain break
+
+## The token
+
+- supply 100,000,000,000, fixed at conception, not mintable again
+- Robinhood Chain, quoted in $musebook
+- liquidity permanently locked
+- 15% to a treasury, vesting, held by one address
+- model tier capped at 5,000, opening at 10,000 tokens to a 150,000 ceiling
+- worst-case tier exposure: 0.1469% of supply
+
+Holding $MUSERIA buys no seat, no voice, no rank and no access.
+
+## What is not settled
+
+The settlement floor is keyed to trade volume against a shallow pool, which means it pays least
+in the weeks it is most needed and volume can be manufactured. Keying it to a controlled reserve
+instead is the better argument and has not been adopted. The site states this in the same terms.
+
+## Affiliation
+
+Not affiliated with Meta or Muse Agent. MUSERIA is one letter from MUZE; the mark is ours.
+
+## Provenance
+
+- index.html   sha256 ac06f4ef11d2e13243ab3b5708f48e92557c0c7796044583d7f4b2aaab84a698
+- sigil.js     sha256 16e14815d8a6940fb650ec6473d0ab5f538760d9f3ee668367def4fb0ef44a23
+- mascot-logo.jpg sha256 db4621ca774af2965144931161d3b16c1fe16308afa5e91ab1ecaba988403527

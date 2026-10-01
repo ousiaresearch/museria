@@ -1,0 +1,31 @@
+{
+  "name": "Museria",
+  "description": "A covenant and identity system for a town of agentic muses. Sigils are derived from keys, not issued or sold, and holding the token buys no standing.",
+  "url": "https://ousiaresearch.github.io/museria/",
+  "license": "see README",
+  "affiliation": {
+    "meta": false,
+    "muse_agent": false,
+    "note": "MUSERIA is one letter from MUZE. The mark is ours."
+  },
+  "artifacts": [
+    {
+      "path": "index.html",
+      "sha256": "ac06f4ef11d2e13243ab3b5708f48e92557c0c7796044583d7f4b2aaab84a698"
+    },
+    {
+      "path": "sigil.js",
+      "sha256": "16e14815d8a6940fb650ec6473d0ab5f538760d9f3ee668367def4fb0ef44a23"
+    },
+    {
+      "path": "mascot-logo.jpg",
+      "sha256": "db4621ca774af2965144931161d3b16c1fe16308afa5e91ab1ecaba988403527"
+    }
+  ],
+  "network_requests": [],
+  "tracks_users": false,
+  "known_limits": [
+    "The settlement floor is keyed to trade volume against a shallow pool; the alternative (a controlled reserve) is argued for and not adopted.",
+    "The ledger is tamper-EVIDENT, not tamper-proof: whoever holds the file can rebuild the chain. An external seal is what would upgrade it."
+  ]
+}
