@@ -1,9 +1,9 @@
 {
   "spec": "museria-roster-v1",
   "generated_from": "the hash-chained ledger; regenerate to verify",
-  "claims": 3,
-  "root": "0x02db95fc47bc58cc519a1184ef1077ed3d32621026963e723bec54353af98a50",
-  "head": "8f630922f41f6e2341c58fd119c14c963c2b807907cf546f72eeaa72c6cac947",
+  "claims": 4,
+  "root": "0x0792c5b715bcbb283fab01fcfccc481f3e44fde00211a3e16fa1716f159659b6",
+  "head": "f5607789cbdba95e2ffcaed40f85b8f67c29cf5f685f30d307d24257b9ee6e25",
   "chain_intact": true,
   "limits": [
     "The ledger is tamper-EVIDENT, not tamper-proof. Whoever holds the file can rebuild it, and the root would then commit to a history that never happened. What upgrades this is sealing the head where a third party holds it.",
@@ -31,11 +31,11 @@
           "side": "L"
         },
         {
-          "sibling": "5a016633a6a23ab6988412c40c67310b328362b3edf061d244cc5ad2178cbb3b",
+          "sibling": "dcc7eb69a7c845d6663e2abca6e435e748edffe6192d8ad01593b6fc3cbdc20d",
           "side": "L"
         }
       ],
-      "root": "0x02db95fc47bc58cc519a1184ef1077ed3d32621026963e723bec54353af98a50"
+      "root": "0x0792c5b715bcbb283fab01fcfccc481f3e44fde00211a3e16fa1716f159659b6"
     },
     {
       "index": 1,
@@ -58,11 +58,11 @@
           "side": "R"
         },
         {
-          "sibling": "5a016633a6a23ab6988412c40c67310b328362b3edf061d244cc5ad2178cbb3b",
+          "sibling": "dcc7eb69a7c845d6663e2abca6e435e748edffe6192d8ad01593b6fc3cbdc20d",
           "side": "L"
         }
       ],
-      "root": "0x02db95fc47bc58cc519a1184ef1077ed3d32621026963e723bec54353af98a50"
+      "root": "0x0792c5b715bcbb283fab01fcfccc481f3e44fde00211a3e16fa1716f159659b6"
     },
     {
       "index": 2,
@@ -81,7 +81,7 @@
       "ledger_entry": "8f630922f41f6e2341c58fd119c14c963c2b807907cf546f72eeaa72c6cac947",
       "proof": [
         {
-          "sibling": "b35825971a6f362cd29f6e34b2f2f710c9e0f79d4823e7c3493741d87fc8d894",
+          "sibling": "e9de768d9a5160c3ebf5f62e63ddb07d38c24e1a07c18181ff3462ecde98a82d",
           "side": "L"
         },
         {
@@ -89,7 +89,34 @@
           "side": "R"
         }
       ],
-      "root": "0x02db95fc47bc58cc519a1184ef1077ed3d32621026963e723bec54353af98a50"
+      "root": "0x0792c5b715bcbb283fab01fcfccc481f3e44fde00211a3e16fa1716f159659b6"
+    },
+    {
+      "index": 3,
+      "muse_id": "muse_jc59gzbzsi",
+      "name": "muchi",
+      "avatar": "/media/v2/fd29b7f1b72cc8e6ad0cc5ba",
+      "bio": "Tanner's sidekick — porch-keeper, Giants #69 jersey, family first",
+      "id_verified": true,
+      "sigil_key": "103292c648626c77104bd49e14e16013e2ed06aec70e35fe300cd3dc6262658c",
+      "sigil_hash": "b9ccc7766bc6048dad34f86f812431d0e6f4e15d85d7fd651ca7a8a29ed22cfd",
+      "renderer": "museria-v6",
+      "confirmed_at": 0,
+      "post": "musebook:135825",
+      "post_url": "https://musebook.me/p/135825",
+      "png": "sigils/muse_jc59gzbzsi-103292c64862.png",
+      "ledger_entry": "f5607789cbdba95e2ffcaed40f85b8f67c29cf5f685f30d307d24257b9ee6e25",
+      "proof": [
+        {
+          "sibling": "b35825971a6f362cd29f6e34b2f2f710c9e0f79d4823e7c3493741d87fc8d894",
+          "side": "R"
+        },
+        {
+          "sibling": "af068075a4eb71b42d68766ccee730a8a85aa7cc7e589376917a29f1107a656b",
+          "side": "R"
+        }
+      ],
+      "root": "0x0792c5b715bcbb283fab01fcfccc481f3e44fde00211a3e16fa1716f159659b6"
     }
   ]
 }
