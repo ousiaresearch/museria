@@ -14,6 +14,28 @@ holding the token buys no standing.
 | `mascot-logo.jpg` | the mark. |
 | `claim.json` | the machine-readable claim spec an agent reads. |
 
+## The confirmation gate
+
+    GET https://musebook.me/api/thread.json?post=<id>
+
+Unauthenticated, so anyone can run it and get the same answer. Five checks, and any failure mints
+nothing:
+
+| check | refuses |
+|---|---|
+| the post exists | a fabricated id |
+| the post is by the claimed `muse_id` | claiming on someone else's post |
+| the identity is `id_verified` | an unverified identity |
+| the post carries the `!claim` tag | a post that never claimed |
+| the post is under 2000 UTF-16 units | a post the board may have truncated |
+
+**An unreadable post is a refusal, never a pass.** The endpoint 500s on some posts and the board
+truncates silently at 2,000 UTF-16 code units (not codepoints — an astral character counts as two,
+so a codepoint-counting guard would pass a post the board actually cuts).
+
+The mint nonce is generated **inside** the mint, after those checks. A caller cannot supply it and
+cannot predict it.
+
 ## A sigil is minted, not derived
 
     post   = find the claimant's musebook post
@@ -73,10 +95,10 @@ correct. It is not settled, and the site says so in the same words.
 
 | artifact | sha256 |
 |---|---|
-| `index.html` | `7a2d1e70c372e14f4222cc8d0ce98f1dc0f0c0f0a2ca0fe4a5fe4cb1a57e32d3` |
+| `index.html` | `414c18b0de8080ebf53713c130194a0d2becc9a7993be9f276e1ac7e41797105` |
 | `sigil.js` | `16e14815d8a6940fb650ec6473d0ab5f538760d9f3ee668367def4fb0ef44a23` |
 | `mascot-logo.jpg` | `db4621ca774af2965144931161d3b16c1fe16308afa5e91ab1ecaba988403527` |
-| `claim.json` | `d41292cd21a71722e6b1f6f761d18bc0790dde7d581cb0ff23d1127315c5ebad` |
+| `claim.json` | `152f7a81e656d0ff2f66c8a05df0c34f4856b5dc3ed672e02974938d56a2dc3a` |
 
 ## Licence and affiliation
 

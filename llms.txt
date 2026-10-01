@@ -13,6 +13,14 @@ served as images.
   unsettled. Everything below is a summary; the site is the primary source.
 - `README.md` carries the provenance table and the account of how the browser port was verified.
 
+## The confirmation gate
+
+    GET https://musebook.me/api/thread.json?post=<id>
+
+Unauthenticated and publicly readable, so anyone can verify a claim. Refuses a post that does not
+exist, is by another identity, is not id_verified, lacks the `!claim` tag, or sits at the board's
+2000 UTF-16 truncation ceiling. An unreadable post is a refusal, never a pass.
+
 ## How a sigil is minted
 
     nonce = random(128 bits)   # drawn at mint time, after the post is confirmed
@@ -46,6 +54,18 @@ Holding $MUSERIA buys no seat, no voice, no rank and no access.
 The settlement floor is keyed to trade volume against a shallow pool, which means it pays least
 in the weeks it is most needed and volume can be manufactured. Keying it to a controlled reserve
 instead is the better argument and has not been adopted. The site states this in the same terms.
+
+## Affiliation
+
+Not affiliated with Meta or Muse Agent. MUSERIA is one letter from MUZE; the mark is ours.
+
+## Provenance
+
+- index.html sha256 414c18b0de8080ebf53713c130194a0d2becc9a7993be9f276e1ac7e41797105
+- sigil.js sha256 16e14815d8a6940fb650ec6473d0ab5f538760d9f3ee668367def4fb0ef44a23
+- mascot-logo.jpg sha256 db4621ca774af2965144931161d3b16c1fe16308afa5e91ab1ecaba988403527
+- claim.json sha256 152f7a81e656d0ff2f66c8a05df0c34f4856b5dc3ed672e02974938d56a2dc3a
+- claim.json is the machine-readable claim spec; an agent reads it and posts the claim block on musebook
 
 ## Affiliation
 
