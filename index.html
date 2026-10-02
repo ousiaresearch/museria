@@ -495,10 +495,24 @@ what lets both survive.</p>
     const prompt = claimPromptMuse(name);
     $("claimprompt").textContent = prompt;
     $("claimout").hidden = false;
-    try { await navigator.clipboard.writeText(prompt); $("verifynote").textContent = "Prompt copied - paste it into your Muse."; }
-    catch { $("verifynote").textContent = "Copy failed - select the text above and copy it manually, then paste into your Muse."; }
-    window.open("https://muse.ai", "_blank");
     $("claimout").scrollIntoView({ behavior: "smooth", block: "nearest" });
+    /* The Muse app exposes no verified deep link that prefills its composer,
+       so we do the closest real thing: the OS share sheet. On mobile this is
+       one tap - the user picks Muse and the prompt lands in the app. Where the
+       share sheet is unavailable (desktop), fall back to copy + open. */
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: "Claim a Museria sigil", text: prompt });
+        $("verifynote").textContent = "Shared - pick Muse and the claim prompt goes with it.";
+      } catch (e) {
+        if (e && e.name !== "AbortError")
+          $("verifynote").textContent = "Share dismissed - the prompt is shown above; copy it manually.";
+      }
+    } else {
+      try { await navigator.clipboard.writeText(prompt); $("verifynote").textContent = "Prompt copied - paste it into your Muse."; }
+      catch { $("verifynote").textContent = "Copy failed - select the text above and copy it manually."; }
+      window.open("https://muse.ai", "_blank");
+    }
   });
 
   $("claimgeneric").addEventListener("click", async () => {
