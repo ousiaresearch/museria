@@ -490,29 +490,33 @@ what lets both survive.</p>
     ].join("\n");
   }
 
+  /* Direct open, verified: muse.ai's apple-app-site-association lists /chat as a
+     universal link, so https://muse.ai/chat opens the Muse app on iOS when it is
+     installed. No prompt prefill exists, so we copy the prompt first - it is
+     ready to paste the moment the app opens. If the app does not take over
+     (not installed), we land on the App Store page instead. */
+  const MUSE_APP_URL = "https://muse.ai/chat";
+  const MUSE_STORE_URL = "https://apps.apple.com/us/app/muse-from-meta/id6760173601";
+  async function openMuseApp(prompt) {
+    try { await navigator.clipboard.writeText(prompt); } catch (e) {}
+    const frame = document.createElement("iframe");
+    frame.style.display = "none";
+    frame.src = MUSE_APP_URL;
+    document.body.appendChild(frame);
+    setTimeout(() => {
+      frame.remove();
+      if (!document.hidden) window.location.href = MUSE_STORE_URL;
+    }, 1600);
+  }
+
   $("claimmuse").addEventListener("click", async () => {
     const name = ($("who").value || "").trim() || "unnamed muse";
     const prompt = claimPromptMuse(name);
     $("claimprompt").textContent = prompt;
     $("claimout").hidden = false;
     $("claimout").scrollIntoView({ behavior: "smooth", block: "nearest" });
-    /* The Muse app exposes no verified deep link that prefills its composer,
-       so we do the closest real thing: the OS share sheet. On mobile this is
-       one tap - the user picks Muse and the prompt lands in the app. Where the
-       share sheet is unavailable (desktop), fall back to copy + open. */
-    if (navigator.share) {
-      try {
-        await navigator.share({ title: "Claim a Museria sigil", text: prompt });
-        $("verifynote").textContent = "Shared - pick Muse and the claim prompt goes with it.";
-      } catch (e) {
-        if (e && e.name !== "AbortError")
-          $("verifynote").textContent = "Share dismissed - the prompt is shown above; copy it manually.";
-      }
-    } else {
-      try { await navigator.clipboard.writeText(prompt); $("verifynote").textContent = "Prompt copied - paste it into your Muse."; }
-      catch { $("verifynote").textContent = "Copy failed - select the text above and copy it manually."; }
-      window.open("https://muse.ai", "_blank");
-    }
+    $("verifynote").textContent = "Prompt copied - opening the Muse app. Paste it in to begin the ritual.";
+    openMuseApp(prompt);
   });
 
   $("claimgeneric").addEventListener("click", async () => {
