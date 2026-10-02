@@ -71,7 +71,7 @@
 </div>
 
 <h2>the gate, in full</h2>
-<pre><code>eligible  = <span class="k">has_sigil</span> AND <span class="k">6 distinct weeks of filings</span> AND <span class="k">94,966,761 MUSERIA held</span>
+<pre><code>eligible  = <span class="k">has_sigil</span> AND <span class="k">6 distinct weeks of filings</span> AND <span class="k">40,000,000 MUSERIA held</span>
 cap       = <span class="k">3.0 x (season pot / sigil holders)</span>, per season
 earning   = <span class="k">per qualifying week</span>, never per post
 season    = <span class="k">calendar quarters</span>, boundaries published before they open</code></pre>
@@ -83,10 +83,10 @@ record of having shown up.</p>
 
 <h2>the numbers</h2>
 <div class="grid">
-  <div class="cell"><div class="l">holding floor</div><div class="v big">94,966,761</div>
+  <div class="cell"><div class="l">holding floor</div><div class="v big">40,000,000</div>
     <div class="faint">MUSERIA &middot; the band's low end</div></div>
-  <div class="cell"><div class="l">band</div><div class="v">$10 – $25</div>
-    <div class="faint">237,416,904 MUSERIA at the top</div></div>
+  <div class="cell"><div class="l">of total supply</div><div class="v">0.04%</div>
+    <div class="faint">40,000,000 tokens</div></div>
   <div class="cell"><div class="l">price basis</div><div class="v">$1.053e-07</div>
     <div class="faint">per MUSERIA</div></div>
   <div class="cell"><div class="l">cap</div><div class="v">3.0&times;</div>
@@ -94,15 +94,23 @@ record of having shown up.</p>
 </div>
 
 <div class="stop">
-  <b>the price is a QUOTE, and it excludes slippage.</b>
-  <p>Basis: <code>operator quote, before slippage and price impact</code>. The floor of 94,966,761 MUSERIA was priced <em>before</em>
-  slippage and price impact. The pool is thin — roughly $8.9k of depth and a ~3.5% round trip — so
-  <strong>acquiring the floor moves the price against the buyer.</strong> What a buyer actually pays
-  to cross this gate is a materially worse number than 94,966,761. Anyone about to cross it deserves to
-  be told that first.</p>
+  <b>the floor is a SHARE OF SUPPLY, not a dollar amount.</b>
+  <p>40,000,000 MUSERIA = <strong>0.04% of the 100,000,000,000 total supply</strong>. That is a
+  division and a public constant &mdash; <code>totalSupply()</code> answers it, and nobody has to
+  trust a price feed, a pool, or anybody's arithmetic.</p>
+  <p><strong>A 100&times; move in the token's price changes this floor by exactly nothing.</strong>
+  There is a test that moves the price 100&times; and requires the floor to stay put. A dollar floor
+  would have moved 100&times; with it, quietly turning a $10 gate into a $1,000 one.</p>
 </div>
 
-<p class="faint">The token floor is <strong>derived</strong> from the $10 – $25 band, never typed in.
+<p class="faint">This replaced a $10&ndash;$25 USD band, and <strong>the band was the problem, not
+merely the form</strong>: at the reference quote $10 was 94,966,761 tokens, and the largest real
+holder &mdash; with 43,717,639 bound on-chain &mdash; was short with everything she had. 0.04% is
+the first value that clears a real participant. For scale that is roughly $4 at the operator's
+quote, taken <em>before</em> slippage on a thin pool &mdash; the USD figures are
+<strong>display only and are never read by the gate</strong>.</p>
+
+<p class="faint">The token floor is <strong>derived</strong> from the supply share band, never typed in.
 A hardcoded token figure goes stale the moment the price moves and would quietly turn a $10 gate
 into a $0.02 gate or a $5,000 gate. There is a test that moves the price 10&times; and requires the
 token floor to follow it.</p>
@@ -178,7 +186,7 @@ after people have qualified.</p>
 <pre><code>season      2026-Q4
 window      2026-10-01 00:00 → 2027-01-01 00:00 UTC
 weeks       2026-W40 … 2026-W53
-commitment  43d958d06f69f073fba71e079e387f1363a41c0e8da08e195fb8e48b8927bbe2</code></pre>
+commitment  9308633c6d8a7e9d8f2f5f98302c14cbee74576f38ae051a9d67b32ebfafd550</code></pre>
 
 <h2>the split, for when it is</h2>
 <pre><code>RESERVED       back to the treasury, compounding the reserve

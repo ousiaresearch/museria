@@ -85,8 +85,8 @@ record of having shown up.</p>
 <div class="grid">
   <div class="cell"><div class="l">holding floor</div><div class="v big">__LO__</div>
     <div class="faint">MUSERIA &middot; the band's low end</div></div>
-  <div class="cell"><div class="l">band</div><div class="v">__BAND__</div>
-    <div class="faint">__HI__ MUSERIA at the top</div></div>
+  <div class="cell"><div class="l">of total supply</div><div class="v">__PCT__%</div>
+    <div class="faint">__LO__ tokens</div></div>
   <div class="cell"><div class="l">price basis</div><div class="v">__PX__</div>
     <div class="faint">per MUSERIA</div></div>
   <div class="cell"><div class="l">cap</div><div class="v">__CAP__&times;</div>
@@ -94,13 +94,21 @@ record of having shown up.</p>
 </div>
 
 <div class="stop">
-  <b>the price is a QUOTE, and it excludes slippage.</b>
-  <p>Basis: <code>__BASIS__</code>. The floor of __LO__ MUSERIA was priced <em>before</em>
-  slippage and price impact. The pool is thin — roughly $8.9k of depth and a ~3.5% round trip — so
-  <strong>acquiring the floor moves the price against the buyer.</strong> What a buyer actually pays
-  to cross this gate is a materially worse number than __LO__. Anyone about to cross it deserves to
-  be told that first.</p>
+  <b>the floor is a SHARE OF SUPPLY, not a dollar amount.</b>
+  <p>__LO__ MUSERIA = <strong>__PCT__% of the 100,000,000,000 total supply</strong>. That is a
+  division and a public constant &mdash; <code>totalSupply()</code> answers it, and nobody has to
+  trust a price feed, a pool, or anybody's arithmetic.</p>
+  <p><strong>A 100&times; move in the token's price changes this floor by exactly nothing.</strong>
+  There is a test that moves the price 100&times; and requires the floor to stay put. A dollar floor
+  would have moved 100&times; with it, quietly turning a $10 gate into a $1,000 one.</p>
 </div>
+
+<p class="faint">This replaced a $10&ndash;$25 USD band, and <strong>the band was the problem, not
+merely the form</strong>: at the reference quote $10 was 94,966,761 tokens, and the largest real
+holder &mdash; with 43,717,639 bound on-chain &mdash; was short with everything she had. 0.04% is
+the first value that clears a real participant. For scale that is roughly $4 at the operator's
+quote, taken <em>before</em> slippage on a thin pool &mdash; the USD figures are
+<strong>display only and are never read by the gate</strong>.</p>
 
 <p class="faint">The token floor is <strong>derived</strong> from the __BAND__ band, never typed in.
 A hardcoded token figure goes stale the moment the price moves and would quietly turn a $10 gate
