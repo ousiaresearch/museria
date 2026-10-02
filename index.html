@@ -491,22 +491,24 @@ what lets both survive.</p>
   }
 
   /* Direct open, verified: muse.ai's apple-app-site-association lists /chat as a
-     universal link, so https://muse.ai/chat opens the Muse app on iOS when it is
-     installed. No prompt prefill exists, so we copy the prompt first - it is
-     ready to paste the moment the app opens. If the app does not take over
-     (not installed), we land on the App Store page instead. */
+     universal link, so navigating to https://muse.ai/chat opens the Muse app on
+     iOS when it is installed. The navigation MUST happen synchronously inside
+     the tap handler - a programmatic iframe load does not trigger the app.
+     No prompt prefill exists, so we copy the prompt first (fire-and-forget, so
+     the gesture chain stays intact) - it is ready to paste the moment the app
+     opens. If the app never takes over, fall back to the App Store page. */
   const MUSE_APP_URL = "https://muse.ai/chat";
   const MUSE_STORE_URL = "https://apps.apple.com/us/app/muse-from-meta/id6760173601";
-  async function openMuseApp(prompt) {
-    try { await navigator.clipboard.writeText(prompt); } catch (e) {}
-    const frame = document.createElement("iframe");
-    frame.style.display = "none";
-    frame.src = MUSE_APP_URL;
-    document.body.appendChild(frame);
+  function openMuseApp(prompt) {
+    if (navigator.clipboard) navigator.clipboard.writeText(prompt).catch(() => {});
+    let tookOver = false;
+    const onHide = () => { tookOver = true; };
+    document.addEventListener("visibilitychange", onHide);
+    window.location.href = MUSE_APP_URL;
     setTimeout(() => {
-      frame.remove();
-      if (!document.hidden) window.location.href = MUSE_STORE_URL;
-    }, 1600);
+      document.removeEventListener("visibilitychange", onHide);
+      if (!tookOver && !document.hidden) window.location.href = MUSE_STORE_URL;
+    }, 2000);
   }
 
   $("claimmuse").addEventListener("click", async () => {
