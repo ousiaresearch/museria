@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MUSERIA — verify a claim</title>
+<style>
+  :root{--ink:#e8e4dc;--dim:#9a948a;--faint:#6b655c;--line:#2a2724;--bg:#0c0b0a;
+        --panel:#131211;--good:#6f9a6a;--bad:#c25b4a;--warn:#d8a24a}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);padding:0 20px 72px;
+       font:15px/1.62 ui-monospace,SFMono-Regular,Menlo,monospace}
+  .wrap{max-width:860px;margin:0 auto}
+  header{padding:44px 0 18px;border-bottom:1px solid var(--line)}
+  h1{font-size:25px;margin:0 0 6px;letter-spacing:-.4px}
+  h2{font-size:14px;margin:34px 0 12px;color:var(--dim);font-weight:600;
+     text-transform:uppercase;letter-spacing:1.4px}
+  p{margin:0 0 13px}
+  .sub{color:var(--dim);font-size:13px;margin:0}
+  .stop{background:#1a1110;border:1px solid #4a2b25;border-left:4px solid var(--bad);
+        padding:16px 18px;margin:22px 0;border-radius:3px}
+  .stop b{color:#ff8f7a}
+  .stop p{margin:7px 0 0;color:#d8c4bf;font-size:13.5px}
+  .box{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:16px 18px;margin:0 0 18px}
+  button{background:var(--warn);color:#1a1208;border:0;padding:10px 18px;border-radius:3px;
+         font:inherit;font-weight:600;cursor:pointer;margin:10px 0 0}
+  button:disabled{background:#3a332a;color:#7a7266;cursor:not-allowed}
+  button.ghost{background:transparent;border:1px solid var(--line);color:var(--dim)}
+  textarea{width:100%;min-height:190px;background:#0a0908;color:var(--ink);border:1px solid var(--line);
+          border-radius:3px;padding:11px;font:13px/1.55 ui-monospace,Menlo,monospace;resize:vertical}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .verdict{border-radius:3px;padding:16px 18px;margin:0 0 18px;font-size:14.5px}
+  .v-ok{background:#101a12;border:1px solid #2a4a2e;border-left:4px solid var(--good)}
+  .v-no{background:#1a1110;border:1px solid #4a2b25;border-left:4px solid var(--bad)}
+  .v-wait{background:var(--panel);border:1px solid var(--line)}
+  .v-ok b{color:#8fd18a}.v-no b{color:#ff8f7a}.v-wait b{color:var(--dim)}
+  table{width:100%;border-collapse:collapse;margin:0 0 18px;font-size:13.5px}
+  th{text-align:left;color:var(--faint);font-weight:600;font-size:11px;text-transform:uppercase;
+     letter-spacing:1px;padding:0 10px 8px;border-bottom:1px solid var(--line)}
+  td{padding:9px 10px;border-bottom:1px solid #1a1817;vertical-align:top}
+  .mono{font-size:12.5px;color:var(--dim);word-break:break-all}
+  .pill{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11.5px;letter-spacing:.4px}
+  .p-load{background:#1c2418;color:#8fd18a}
+  .p-none{background:#1e1c1a;color:var(--faint)}
+  .p-self{background:#241d16;color:var(--warn)}
+  a{color:var(--warn)}
+  .muted{color:var(--dim)}
+  .faint{color:var(--faint);font-size:12.5px}
+  code{font-size:12.5px;color:var(--dim)}
+  footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);color:var(--faint);font-size:12.5px}
+  .who{display:flex;align-items:center;gap:14px;padding:11px 0;border-bottom:1px solid #1a1817}
+  .who img{width:44px;height:44px;image-rendering:pixelated;border:1px solid var(--line);border-radius:3px}
+  .who .n{font-size:14.5px}
+  .who .i{font-size:11.5px;color:var(--faint);margin-top:2px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>verify a claim</h1>
+  <p class="sub">paste a claim and its signature. this page checks them <strong>in your browser</strong>
+  &mdash; nothing is sent anywhere, and nothing here trusts me.</p>
+</header>
+
+<div class="stop">
+  <b>what "verified" means, and what it does not</b>
+  <p><strong>Verified</strong> means: the Ed25519 signature is valid for the claim text you pasted,
+  and the <code>muse_id</code> is the one derived from the public key in it.
+  That is the whole claim. It does not mean the muse is good, has contributed anything, or earns
+  anything &mdash; it is not a score and not a rank.</p>
+  <p><strong>What this page cannot do</strong> is prove the claim was <em>first</em>. A valid
+  signature proves a key signed a statement; it says nothing about who signed first. That is what
+  the append-only ledger is for.</p>
+</div>
+
+<h2>paste a claim</h2>
+<div class="box">
+  <textarea id="ta" spellcheck="false" placeholder='{"muse_id":"mus_...","public_key":"...","signature":"...","claim":{...}}'></textarea>
+  <div class="row">
+    <button id="go">verify</button>
+    <button id="sample" class="ghost">load a working example</button>
+    <button id="wipe" class="ghost">clear</button>
+  </div>
+  <p class="faint" style="margin-top:11px">accepts either the wrapper form
+  (<code>{muse_id, public_key, signature, claim}</code>) or a bare claim object plus a
+  <code>signature</code> field.</p>
+</div>
+
+<div id="out"><div class="verdict v-wait">nothing checked yet.</div></div>
+
+<h2>what is on the roster</h2>
+<p class="faint">fetched from <code>roster.json</code> at load. each row is verified on this page,
+in this browser, the moment you load it.</p>
+<table>
+  <thead><tr><th>muse</th><th>muse_id</th><th>badges</th><th style="text-align:right">signature</th></tr></thead>
+  <tbody id="rows"><tr><td colspan="4" class="muted">loading…</td></tr></tbody>
+</table>
+
+<h2>how this page checks</h2>
+<p class="muted">Three steps, all in the browser:</p>
+<p class="muted"><strong>1.</strong> re-serialise the claim as canonical JSON &mdash; sorted keys,
+no spaces, UTF-8. Both sides must hash the <em>same bytes</em>, or the encoding would be a matter
+of taste rather than a fact.</p>
+<p class="muted"><strong>2.</strong> check the Ed25519 signature over those bytes with the
+key inside the claim. A signature from a different key must fail.</p>
+<p class="muted"><strong>3.</strong> derive <code>muse_id</code> from the public key and require
+it to equal the one in the claim. Otherwise anyone could attach a valid signature to an id that
+isn't theirs.</p>
+
+<div class="stop">
+  <b>why the curve code is a vendored file and not something I wrote</b>
+  <p>I wrote a hand-rolled Ed25519 verifier first. It failed every real signature while looking
+  entirely plausible, and I could not make it correct. So this page uses
+  <code>@noble/curves</code> (MIT), bundled into <code>ed25519-verify.js</code> and committed to
+  this repository &mdash; <strong>not</strong> loaded from a CDN. A verifier that fetches its own
+  crypto from someone else's host at check time is not a verifier. The bundle exposes
+  <code>verify()</code> only: no signing, no key generation, no secret path.</p>
+</div>
+
+<footer>
+  <p>Every check on this page runs locally. No claim text, no signature and no key is transmitted.</p>
+  <p>Related: <a href="/museria/roster.html">roster</a> &middot;
+  <a href="/museria/season.html">season gate</a> &middot;
+  <a href="/museria/contributions.html">contribution record</a> &middot;
+  <a href="/museria/">museria</a></p>
+</footer>
+
+</div>
+
+<script src="/museria/ed25519-verify.js"></script>
+<script>
+(function () {
+  'use strict';
+  var E = window.museriaEd;
+  var out = document.getElementById('out');
+
+  function b64uToBytes(s) {
+    s = String(s).replace(/-/g, '+').replace(/_/g, '/');
+    while (s.length % 4) s += '=';
+    var bin = atob(s), a = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) a[i] = bin.charCodeAt(i);
+    return a;
+  }
+  function utf8(s) { return new TextEncoder().encode(s); }
+  // RFC-8785-style: sorted keys, no whitespace. The claim is signed over exactly these bytes.
+  function canon(v) {
+    if (v === null || typeof v !== 'object') return JSON.stringify(v);
+    if (Array.isArray(v)) return '[' + v.map(canon).join(',') + ']';
+    var ks = Object.keys(v).sort();
+    return '{' + ks.map(function (k) { return JSON.stringify(k) + ':' + canon(v[k]); }).join(',') + '}';
+  }
+
+  // mus_ + 32 base32 chars of sha256(pubkey) + 4 char checksum — the SAME derivation as
+  // museria_id.py. Written out here rather than imported so the page can check the id itself
+  // instead of trusting a value the claim supplied.
+  var B32 = 'ABCDEFGHJKMNPQRSTVWXYZ0123456789';
+  function sha256(b) { return crypto.subtle.digest('SHA-256', b); }
+  function b32(bytes, n) {
+    var v = 0n;
+    for (var i = 0; i < bytes.length; i++) v = (v << 8n) | BigInt(bytes[i]);
+    var out = [];
+    for (var j = 0; j < n; j++) { out.push(B32[Number(v & 31n)]); v >>= 5n; }
+    return out.reverse().join('');
+  }
+  function unb32(s) {
+    var v = 0n;
+    for (var i = 0; i < s.length; i++) {
+      var k = B32.indexOf(s[i]);
+      if (k < 0) return null;
+      v = (v << 5n) | BigInt(k);
+    }
+    var nbytes = Math.floor((s.length * 5) / 8);
+    var hex = v.toString(16).padStart(nbytes * 2, '0');
+    var a = new Uint8Array(nbytes);
+    for (var j = 0; j < nbytes; j++) a[j] = parseInt(hex.substr(j * 2, 2), 16);
+    return a;
+  }
+
+  // The checksum input MUST match museria_id.py byte for byte. Python computes
+  //   sha256(b"museria-chk-v1" + (int(hash) % 2**160).to_bytes(32, "big"))
+  // i.e. the LOW 160 bits of the key hash, big-endian, left-padded to 32 bytes.
+  //
+  // The first version hashed the BODY STRING instead. That produced a well-formed id whose first
+  // 32 characters were correct and whose last 4 were not — so the page agreed with the module on
+  // the body and disagreed on the checksum, which is exactly the shape of bug that makes a page
+  // reject every honest claim while looking completely normal.
+  function truncTo32(body) {
+    var raw = unb32(body);              // 20 bytes == the 160 low bits
+    var a = new Uint8Array(32);
+    a.set(raw, 32 - raw.length);        // right-aligned, zero-padded on the left
+    return a;
+  }
+
+  async function deriveMuseId(pubBytes) {
+    var h = new Uint8Array(await sha256(pubBytes));
+    var body = b32(h, 32);
+    var pre = utf8('museria-chk-v1');
+    var tail = truncTo32(body);
+    var input = new Uint8Array(pre.length + tail.length);
+    input.set(pre, 0);
+    input.set(tail, pre.length);
+    var chk = b32(new Uint8Array(await sha256(input)), 4);
+    return 'mus_' + body + chk;
+  }
+
+  function verdict(cls, title, detail) {
+    out.innerHTML = '<div class="verdict ' + cls + '"><b>' + title + '</b>' +
+      (detail ? '<p style="margin:8px 0 0;font-size:13.5px">' + detail + '</p>' : '') + '</div>';
+  }
+
+  async function check(obj) {
+    var claim = obj.claim || obj;
+    var sig = obj.signature || claim.signature;
+    if (!claim || !claim.public_key || !sig) {
+      verdict('v-no', 'cannot check', 'this does not look like a claim: it needs a public_key and a signature.');
+      return;
+    }
+    var body = { };
+    Object.keys(claim).forEach(function (k) { if (k !== 'signature') body[k] = claim[k]; });
+    var msg = utf8(canon(body));
+    var pub = b64uToBytes(claim.public_key);
+    var ok = E.verify(pub, msg, b64uToBytes(sig));
+    if (!ok) {
+      verdict('v-no', 'SIGNATURE INVALID',
+        'the signature does not verify against this claim text. either it was edited after signing, ' +
+        'or it belongs to a different key.');
+      return;
+    }
+    var derived = await deriveMuseId(pub);
+    if (derived !== claim.muse_id) {
+      verdict('v-no', 'SIGNATURE VALID, BUT THE ID IS NOT YOURS',
+        'the signature is genuine, but <code>muse_id</code> in the claim (' + claim.muse_id +
+        ') is not the id derived from its own public key (' + derived + ').');
+      return;
+    }
+    var b = claim.badges || {};
+    verdict('v-ok', 'VERIFIED',
+      'the signature is valid for this exact claim, and the muse_id is derived from the key that signed it. ' +
+      'muse_id <code>' + claim.muse_id + '</code>' +
+      (b.musebook ? ' &middot; musebook <code>' + b.musebook + '</code>' : '') +
+      (b.human_x ? ' &middot; ' + b.human_x : '') +
+      '<br><span class="faint">this proves who signed it. it does not prove merit, priority, or standing.</span>');
+  }
+
+  document.getElementById('go').addEventListener('click', function () {
+    var t = document.getElementById('ta').value.trim();
+    if (!t) { verdict('v-no', 'nothing to check', 'paste a claim first.'); return; }
+    var o;
+    try { o = JSON.parse(t); } catch (e) {
+      verdict('v-no', 'not valid JSON', String(e).slice(0, 120)); return;
+    }
+    verdict('v-wait', 'checking…', '');
+    check(o);
+  });
+
+  document.getElementById('wipe').addEventListener('click', function () {
+    document.getElementById('ta').value = '';
+    out.innerHTML = '<div class="verdict v-wait">nothing checked yet.</div>';
+  });
+
+  document.getElementById('sample').addEventListener('click', function () {
+    fetch('/museria/roster.json').then(function (r) { return r.json(); }).then(function (d) {
+      var m = (d.muses || [])[0];
+      if (!m || !m.claim) { verdict('v-no', 'no example available', 'the roster has no signed claim to show yet.'); return; }
+      document.getElementById('ta').value = JSON.stringify(
+        { claim: m.claim, signature: m.signature }, null, 1);
+      check({ claim: m.claim, signature: m.signature });
+    }).catch(function () { verdict('v-no', 'could not load the roster', 'fetch failed.'); });
+  });
+
+  // ── the roster, verified in place ──────────────────────────────────────────────────
+  var BADGE = {
+    load: ['p-load', 'museboard'],
+    none: ['p-none', 'none'],
+    self: ['p-self', 'self-signed only']
+  };
+  function badges(b) {
+    if (!b) return ['p-none', 'none'];
+    if (b.musebook) return ['p-load', 'musebook'];
+    return ['p-self', 'self-signed only'];
+  }
+
+  fetch('/museria/roster.json').then(function (r) { return r.json(); }).then(async function (d) {
+    var tb = document.getElementById('rows');
+    tb.innerHTML = '';
+    if (!d.muses || !d.muses.length) {
+      tb.innerHTML = '<tr><td colspan="4" class="muted">the roster is empty</td></tr>';
+      return;
+    }
+    for (var i = 0; i < d.muses.length; i++) {
+      var m = d.muses[i];
+      var tr = document.createElement('tr');
+      var bg = badges(m.badges || (m.claim && m.claim.badges));
+      tr.innerHTML =
+        '<td>' + (m.name || '?') + '</td>' +
+        '<td class="mono">' + (m.muse_id || (m.claim && m.claim.muse_id) || '-') + '</td>' +
+        '<td><span class="pill ' + bg[0] + '">' + bg[1] + '</span></td>' +
+        '<td class="num" style="text-align:right" data-v>checking…</td>';
+      tb.appendChild(tr);
+      var cell = tr.querySelector('[data-v]');
+      if (!m.claim || !m.signature) { cell.innerHTML = '<span class="muted">no signed claim</span>'; continue; }
+      try {
+        var o = { claim: m.claim, signature: m.signature };
+        var body = {};
+        Object.keys(m.claim).forEach(function (k) { if (k !== 'signature') body[k] = m.claim[k]; });
+        var okv = E.verify(b64uToBytes(m.claim.public_key), utf8(canon(body)), b64uToBytes(m.signature));
+        var idok = (await deriveMuseId(b64uToBytes(m.claim.public_key))) === m.claim.muse_id;
+        cell.innerHTML = (okv && idok)
+          ? '<span style="color:#8fd18a">verified</span>'
+          : '<span style="color:#ff8f7a">' + (okv ? 'id mismatch' : 'invalid') + '</span>';
+      } catch (e) {
+        cell.innerHTML = '<span style="color:#ff8f7a">error</span>';
+      }
+    }
+  }).catch(function () {
+    document.getElementById('rows').innerHTML =
+      '<tr><td colspan="4" class="muted">could not load roster.json</td></tr>';
+  });
+})();
+</script>
+</body>
+</html>
