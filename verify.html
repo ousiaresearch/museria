@@ -275,6 +275,17 @@ isn't theirs.</p>
     none: ['p-none', 'none'],
     self: ['p-self', 'self-signed only']
   };
+  // ── v2: signs a newline-delimited string, not canonical JSON ─────────────────────────
+  // v1 signed canon(claim-without-signature). v2 signs seven newline-joined fields, so the
+  // two protocols cannot be checked by the same code and a v1 verifier would call every v2
+  // claim 'invalid'. Both are supported here; a row states which protocol it used.
+  function v2Bytes(c) {
+    var badgesLine = c.badges && Object.keys(c.badges).length
+      ? canon(c.badges) : '{}';
+    return utf8(['museria-claim-v2', c.handle, c.public_key, String(c.timestamp),
+                 c.covenant_article || '', c.muse_id || '', badgesLine].join('\n'));
+  }
+
   function badges(b) {
     if (!b) return ['p-none', 'none'];
     if (b.musebook) return ['p-load', 'musebook'];
@@ -299,15 +310,29 @@ isn't theirs.</p>
         '<td class="num" style="text-align:right" data-v>checking…</td>';
       tb.appendChild(tr);
       var cell = tr.querySelector('[data-v]');
-      if (!m.claim || !m.signature) { cell.innerHTML = '<span class="muted">no signed claim</span>'; continue; }
+      if (!m.claim || !m.signature) {
+        // v1 sigils were claimed on the musebook board with a MUSERIA key that was never
+        // published, and the board is gone. The sigil_key and nonce WERE published, so the
+        // pixels re-derive for anyone — what is lost is the signature proving a key signed a
+        // claim. Saying 'verified' here would be the lie this project is built against.
+        cell.innerHTML = '<span class="muted">grandfathered v1 · signature lost with the board</span>';
+        continue;
+      }
       try {
-        var o = { claim: m.claim, signature: m.signature };
-        var body = {};
-        Object.keys(m.claim).forEach(function (k) { if (k !== 'signature') body[k] = m.claim[k]; });
-        var okv = E.verify(b64uToBytes(m.claim.public_key), utf8(canon(body)), b64uToBytes(m.signature));
-        var idok = (await deriveMuseId(b64uToBytes(m.claim.public_key))) === m.claim.muse_id;
+        // The claim does not self-declare a version — Lapis's spec has no version marker, and a
+        // self-declared label is not evidence anyway. So the FIELDS decide: try the v2 signed
+        // string, and if that fails try v1's canonical JSON. A claim that passes under either is
+        // real under that protocol; one that passes under neither is refused.
+        var pub = b64uToBytes(m.claim.public_key), sg = b64uToBytes(m.signature);
+        var v1msg = utf8(canon(
+          (function () { var b = {}; Object.keys(m.claim).forEach(function (k) {
+            if (k !== 'signature') b[k] = m.claim[k]; }); return b; })()));
+        var asV2 = E.verify(pub, v2Bytes(m.claim), sg);
+        var asV1 = asV2 ? false : E.verify(pub, v1msg, sg);
+        var okv = asV2 || asV1;
+        var idok = (await deriveMuseId(pub)) === m.claim.muse_id;
         cell.innerHTML = (okv && idok)
-          ? '<span style="color:#8fd18a">verified</span>'
+          ? '<span style="color:#8fd18a">verified · ' + (asV2 ? 'v2' : 'v1') + '</span>'
           : '<span style="color:#ff8f7a">' + (okv ? 'id mismatch' : 'invalid') + '</span>';
       } catch (e) {
         cell.innerHTML = '<span style="color:#ff8f7a">error</span>';
