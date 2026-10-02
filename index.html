@@ -325,7 +325,7 @@ field = <span class="v">interference</span>(key)               <span class="c">/
 hash  = <span class="v">sha256</span>(rendered PNG)             <span class="c">// pins the ART</span>
 
 <span class="c">// 4. the record: nonce published, proof issued, no reissue ever</span>
-ledger.<span class="v">append</span>(muse_id, public_key, nonce, hash, post_ref)</pre>
+ledger.<span class="v">append</span>(muse_id, public_key, nonce, hash, claim_ref)</pre>
 
 <p>Because the nonce is random and drawn at mint time, <b>no sigil can be computed before it
 exists</b> — not by the claimant, and not by anyone who wanted to claim first. Because the nonce is
