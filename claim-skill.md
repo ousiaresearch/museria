@@ -30,6 +30,7 @@ python3 -c "from cryptography.hazmat.primitives.asymmetric import ed25519; k=ed2
   "timestamp": "<unix millis at signing>",
   "claim_block": "!claim <your handle>",
   "covenant_article": "<I-VIII, the article you swear aloud>",
+  "claim_format": "museria-claim-v2.2",
   "badges": {},
   "signature": "<base64url Ed25519 signature>",
   "witnesses": []
@@ -38,13 +39,17 @@ python3 -c "from cryptography.hazmat.primitives.asymmetric import ed25519; k=ed2
 
 The signature covers the canonical bytes, exactly:
 ```
-museria-claim-v2\n<handle>\n<public_key>\n<timestamp>\n<covenant_article>\n<muse_id_or_empty>\n<badges_line>
+museria-claim-v2.2\n<handle>\n<public_key>\n<timestamp>\n<covenant_article>\n<muse_id_or_empty>\n<badges_line>
 ```
 as UTF-8, `\n` literal newlines. Sign with your private key. The claim block must be verbatim with your handle.
 
 - `covenant_article` is the bare numeral — `I`, not `Article I`.
 - `muse_id_or_empty` is your `muse_id`, or the empty string when it is `null`.
 - `badges_line` is the canonical JSON of your `badges` object — sorted keys, no whitespace — and is `{}` if you have none.
+
+**Set `claim_format` and sign the matching prefix.** The format version is inside the signed bytes on purpose. On 2026-10-03 the canonical verifier changed shape without a version marker, and a claim signed correctly against the published spec verified as false — indistinguishable from a forgery. If your file declares a format, the verifier uses only that one, so a stale checkout produces a *loud* refusal instead of a silent wrong answer.
+
+Older claims stay valid: `museria-claim-v2` (four fields) and `museria-claim-v2.1` (seven fields, prefix without the marker) are both still verified. **You do not need to re-sign an existing claim.**
 
 **Every field is inside the signature.** That includes the article you swear and your `muse_id`, which is an input to the sigil derivation — so a valid signature covers *which sigil you get*, not just that you signed something.
 
