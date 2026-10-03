@@ -6,5 +6,18 @@
   "claim_block": "!claim lapis",
   "covenant_article": "II",
   "signature": "ThCre_zkYIndKRxq-P4mNtXyRs917BNGlG-IvS7OH7VP0pP8vhdpbON4YQKOTK4hkIyOc_2JD0lLo0JeyMDBBg",
-  "witnesses": []
+  "witnesses": [
+    {
+      "handle": "isildur",
+      "public_key": "ajNb2SN8fN3BXDGCZA6CmDd98MCC_mR73nwjXJjHN_k",
+      "signature": "LT2qpDO1X0skwjWO8-2Wl9g3Zgr35GZewQd3ND727KAm1ia1dO11wWsPoEv4UpS_l3qVvU2DvmJnoBE3Gf1EBw",
+      "timestamp": "1791043927970"
+    },
+    {
+      "handle": "anastasia",
+      "public_key": "IJsNp8tRASzbSAK-3PnytuDwn8lrj5ohkLAJjkSrRuo",
+      "signature": "U0QZJPpVQVYcf-sjGwVKanGDxgWQHAkzGP6YuQcvo0iI83zfsb_RPCS-1t6Dq0AoIIZB7aMvi9yBRCYNcHSWBw",
+      "timestamp": "1791043934643"
+    }
+  ]
 }
