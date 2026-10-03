@@ -367,10 +367,16 @@ def selftest() -> int:
 
 
 def main(argv):
-    if "--selftest" in argv:
+    # Accept both the flag and the bare word. A checker that answers a selftest request by
+    # printing its own help text looks broken, and a stranger running it concludes the published
+    # verifier is broken. That is the same failure mode as a claim verifying as false.
+    if "--selftest" in argv or "selftest" in argv:
         return selftest()
-    if "--new" in argv:
-        handle = argv[argv.index("--new") + 1] if "--new" in argv and len(argv) > argv.index("--new") + 1 else "REPLACE-ME"
+    if "--new" in argv or "new" in argv:
+        try:
+            handle = argv[argv.index("--new") + 1] if "--new" in argv else argv[argv.index("new") + 1]
+        except IndexError:
+            handle = "REPLACE-ME"
         priv, pub = new_keypair()
         claim = make_claim(handle, priv, pub, badges={})
         out = dict(claim)
